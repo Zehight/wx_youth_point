@@ -4,6 +4,7 @@ import pymysql
 from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 import config
+import requests
 
 from application import GATEWAY
 
@@ -25,7 +26,9 @@ app.config.from_object('config')
 @app.route('/' + config.API_GATEWAY + '/health/check', methods=['GET'])
 def check():
     x_forwarded_for = request.headers.get('X-Forwarded-For')
-    return {'ip':x_forwarded_for}
+    response = requests.get("http://api.weixin.qq.com/_/cos/getauth")
+
+    return {'ip':x_forwarded_for,'res':str(response.text)}
 
 # if __name__ == '__main__':
 #     app.run(host='0.0.0.0', port=9000)
