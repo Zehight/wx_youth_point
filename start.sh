@@ -1,0 +1,1 @@
+/var/lang/python37/bin/python3 -u run.py
