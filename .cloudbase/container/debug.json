@@ -3,7 +3,8 @@
     {
       "name": "wx_youth_point",
       "domain": "",
-      "ip": ""
+      "ip": "",
+      "containerId": "a2f5fc4af01dc3fe58fb0522c10f239c871c1d53c03547a34264b23cafd1e387"
     }
   ],
   "config": {
@@ -28,7 +29,7 @@
       "envParams": {
         "MYSQL_USERNAME": "root",
         "MYSQL_PASSWORD": "9qQZDBrZ",
-        "MYSQL_ADDRESS": "10.32.108.126:3306",
+        "MYSQL_ADDRESS": "sh-cynosdbmysql-grp-dtc3n9ay.sql.tencentcdb.com:26093",
         "COS_BUCKET": "7072-prod-4gjlstdw9f5f0d7d-1318978931",
         "COS_REGION": "ap-shanghai",
         "DATA_BASE": "youth_point",

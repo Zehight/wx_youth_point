@@ -45,12 +45,12 @@ def preview():
     small_key = small_id + '_' + fileName
     if(size == 'small'):
         response = FileFuncs.client.get_object(
-            Bucket=config.small_img_bucket_name,
+            Bucket=config.cos_bucket,
             Key=small_key,
         )
     else:
         response = FileFuncs.client.get_object(
-            Bucket=config.img_bucket_name,
+            Bucket=config.cos_bucket,
             Key=key,
         )
     fp = response['Body'].get_raw_stream()

@@ -25,7 +25,8 @@ app.config.from_object('config')
 @app.route('/' + config.API_GATEWAY + '/health/check', methods=['GET'])
 def check():
     x_forwarded_for = request.headers.get('X-Forwarded-For')
-    return {'ip':x_forwarded_for}
+    header = str(request.headers.__dict__)
+    return {'ip':x_forwarded_for,'header':header}
 
 # if __name__ == '__main__':
 #     app.run(host='0.0.0.0', port=9000)
