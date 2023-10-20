@@ -4,7 +4,6 @@ import pymysql
 from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 import config
-import requests
 
 from application import GATEWAY
 
