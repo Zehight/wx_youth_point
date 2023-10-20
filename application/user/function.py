@@ -14,7 +14,7 @@ SECRET_KEY = '12dwafdsgefdsvdfgrteweddsfthrefsdvfbtrhrerdsdvbthrefdvfbthedsdvfgr
 
 # 新增
 def create_func(**kwargs):
-    if 'email' not in kwargs or kwargs['create_ip'] is '':
+    if 'email' not in kwargs or kwargs['create_ip'] == '':
         return "操作失败", "服务器错误"
     email_user = User.get(email=kwargs['email'])
 
