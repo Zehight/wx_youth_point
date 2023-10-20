@@ -1,5 +1,11 @@
 {
-  "containers": [],
+  "containers": [
+    {
+      "name": "wx_youth_point",
+      "domain": "",
+      "ip": ""
+    }
+  ],
   "config": {
     "wx_youth_point": {
       "containerPort": 80,
@@ -20,9 +26,14 @@
         }
       ],
       "envParams": {
-        "MYSQL_USERNAME": "",
-        "MYSQL_PASSWORD": "",
-        "MYSQL_ADDRESS": ""
+        "MYSQL_USERNAME": "root",
+        "MYSQL_PASSWORD": "9qQZDBrZ",
+        "MYSQL_ADDRESS": "10.32.108.126:3306",
+        "COS_BUCKET": "7072-prod-4gjlstdw9f5f0d7d-1318978931",
+        "COS_REGION": "ap-shanghai",
+        "DATA_BASE": "youth_point",
+        "APP_ID": "wx4f2dbbae1029571a",
+        "APP_SECRET": "8f5de26f06c3c42e5eec051738b422b9"
       },
       "customLogs": "stdout",
       "initialDelaySeconds": 2
