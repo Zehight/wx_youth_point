@@ -113,4 +113,12 @@ class voteLog(db.Model,CRUDMixin):
     create_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now())
     create_by = db.Column(db.String(255), nullable=False)
 
+class borrow_book_log(db.Model,CRUDMixin):
+    __tablename__ = 'borrow_book_log'
+    id = db.Column(db.String(50), primary_key=True, default=lambda: str(uuid.uuid4()).replace("-", ""))
+    name = db.Column(db.String(50))
+    borrow_time = db.Column(db.DateTime)
+    create_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now())
+    create_by = db.Column(db.String(255), nullable=False)
+
 db.create_all()
