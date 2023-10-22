@@ -9,10 +9,11 @@ import config
 
 
 @file.route('/add', methods=['POST'])
+@token_required
 def add():
     file = request.files['file']
     requestData = request.form.to_dict()
-    create_by = '77987'
+    create_by = request.token_info['id']
     msg, data = FileFuncs.create_func(real_file=file, create_by=create_by, **requestData)
     return MyResponse.make_succ_response(msg=msg, data=data)
 

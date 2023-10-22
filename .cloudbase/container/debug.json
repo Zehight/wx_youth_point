@@ -4,40 +4,9 @@
       "name": "wx_youth_point",
       "domain": "",
       "ip": "",
-      "containerId": "a2f5fc4af01dc3fe58fb0522c10f239c871c1d53c03547a34264b23cafd1e387"
+      "mode": "compose",
+      "containerId": "6ebeaf25b0a7a6904854506a41aa2df70d37212131c1cb556e08b8acf6acb9ba"
     }
   ],
-  "config": {
-    "wx_youth_point": {
-      "containerPort": 80,
-      "minNum": 0,
-      "maxNum": 5,
-      "cpu": 1,
-      "mem": 2,
-      "policyType": "cpu",
-      "policyThreshold": 60,
-      "policyDetails": [
-        {
-          "PolicyType": "cpu",
-          "PolicyThreshold": 60
-        },
-        {
-          "PolicyType": "mem",
-          "PolicyThreshold": 60
-        }
-      ],
-      "envParams": {
-        "MYSQL_USERNAME": "root",
-        "MYSQL_PASSWORD": "9qQZDBrZ",
-        "MYSQL_ADDRESS": "sh-cynosdbmysql-grp-dtc3n9ay.sql.tencentcdb.com:26093",
-        "COS_BUCKET": "7072-prod-4gjlstdw9f5f0d7d-1318978931",
-        "COS_REGION": "ap-shanghai",
-        "DATA_BASE": "youth_point",
-        "APP_ID": "wx4f2dbbae1029571a",
-        "APP_SECRET": "8f5de26f06c3c42e5eec051738b422b9"
-      },
-      "customLogs": "stdout",
-      "initialDelaySeconds": 2
-    }
-  }
+  "config": {}
 }

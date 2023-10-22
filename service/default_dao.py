@@ -1,6 +1,7 @@
 from run import db
 from sqlalchemy import or_
 from datetime import datetime
+import logging
 
 class CRUDMixin:
     def __init__(self):
@@ -17,24 +18,23 @@ class CRUDMixin:
 
     @classmethod
     def create(cls, **kwargs):
+        print('aaaa')
         instance = cls(**kwargs)
         db.session.add(instance)
         db.session.commit()
         return instance
 
-    def update(self, commit=True, **kwargs):
+    def update(self, **kwargs):
         for attr, value in kwargs.items():
             setattr(self, attr, value)
-        if commit:
-            db.session.commit()
-        db.session.close()
+        db.session.commit()
         return self
+
 
     def delete(self, commit=True):
         db.session.delete(self)
         if commit:
             db.session.commit()
-
         db.session.close()
 
     @classmethod

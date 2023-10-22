@@ -2,11 +2,11 @@ import os
 
 dev_config = {
     'username': 'root',
-    'password': 'RZ3WHtJ4',
-    'db_address': 'sh-cdb-php1aito.sql.tencentcdb.com:63541',
+    'password': '9qQZDBrZ',
+    'db_address': 'sh-cynosdbmysql-grp-dtc3n9ay.sql.tencentcdb.com:26093',
     'SecretId': 'AKIDeDPTO9i7RitzgVJwYK1a0DIDze5d6Rlt',
     'SecretKey': '543z8DNeprhPzMUCi2GKDEG94rW6Wisv',
-    'data_base': 'vote',
+    'data_base': 'youth-ponit',
     'app_id': 'wx4f2dbbae1029571a',
     'app_secret': '8f5de26f06c3c42e5eec051738b422b9',
     'dev': True,
@@ -23,6 +23,8 @@ username = os.environ.get("MYSQL_USERNAME", now_config['username'])
 password = os.environ.get("MYSQL_PASSWORD", now_config['password'])
 db_address = os.environ.get("MYSQL_ADDRESS", now_config['db_address'])
 data_base = os.environ.get("DATA_BASE", now_config['data_base'])
+
+
 API_GATEWAY = os.environ.get("API_GATEWAY", '')
 
 # 腾讯云cos

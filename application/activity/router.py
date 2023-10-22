@@ -1,5 +1,5 @@
 import json
-
+from datetime import datetime
 from flask import request
 import application.activity.function as ActivityFuncs
 from application.activity import activity
@@ -12,7 +12,8 @@ from service.login import token_required
 def add():
     requestData = json.loads(request.data)
     create_by = request.token_info['id']
-    msg, data = ActivityFuncs.create_func(create_by=create_by,**requestData)
+    dept_id = request.token_info['dept_id']
+    msg, data = ActivityFuncs.create_func(create_by=create_by,dept_id=dept_id,**requestData)
     return MyResponse.make_succ_response(msg=msg, data=data)
 
 
@@ -46,4 +47,5 @@ def info():
 def list():
     requestData = json.loads(request.data)
     msg, data = ActivityFuncs.getlist_func(**requestData)
+    print(msg,data)
     return MyResponse.make_succ_response(msg=msg, data=data)

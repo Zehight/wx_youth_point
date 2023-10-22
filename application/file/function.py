@@ -13,8 +13,12 @@ import config
 from qcloud_cos import CosConfig
 from qcloud_cos import CosS3Client
 
+
+
 response = requests.get("http://api.weixin.qq.com/_/cos/getauth")
 info=json.loads(response.text)
+
+print('aa')
 
 # 1. 设置用户属性, 包括 secret_id, secret_key, region 等。Appid 已在 CosConfig 中移除，请在参数 Bucket 中带上 Appid。Bucket 由 BucketName-Appid 组成
 tmp_secret_id = info['TmpSecretId']     # 临时密钥的 SecretId，临时密钥生成和使用指引参见 https://cloud.tencent.com/document/product/436/14048
