@@ -24,10 +24,11 @@ class CRUDMixin:
         db.session.commit()
         return instance
 
-    def update(self, **kwargs):
+    def update(self, commit=True, **kwargs):
         for attr, value in kwargs.items():
             setattr(self, attr, value)
-        db.session.commit()
+        if commit:
+            self.save()
         return self
 
 

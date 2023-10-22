@@ -1,23 +1,20 @@
 from sqlalchemy.exc import IntegrityError
-
-from service.models import Activity
+from service.models import ActivityFileRela
 
 
 # 新增
 def create_func(**kwargs):
-    activity = Activity.create(**kwargs)
-    activity_id = activity.id
-    return "操作成功",activity_id
-
+    ActivityFileRela.create(**kwargs)
+    return "操作成功",1
 
 
 # 删除
 def delete_func(**kwargs):
     if 'id' not in kwargs:
         return "操作失败",'数据信息错误'
-    activity = Activity.get(id=kwargs['id'])
-    if activity:
-        activity.delete()
+    activityFileRela = ActivityFileRela.get(id=kwargs['id'])
+    if activityFileRela:
+        activityFileRela.delete()
         return "操作成功",'数据删除成功'
     else:
         return "操作失败",'数据不存在'
@@ -25,22 +22,22 @@ def delete_func(**kwargs):
 
 # 更新
 def update_func(**kwargs):
-    activity = Activity.get(id=kwargs['id'])
-    activity.update(**kwargs)
-    return "操作成功","数据修改成功"
+    activityFileRela = ActivityFileRela.get(id=kwargs['id'])
+    activityFileRela.update(**kwargs)
+    return "操作成功", "数据修改成功"
 
 
 # 查询
 def getinfo_func(**kwargs):
     if 'id' not in kwargs:
         return "操作失败",'参数错误'
-    activity = Activity.get(id=kwargs['id'])
-    if activity:
-        return "操作成功",activity.to_dict()
+    activityFileRela = ActivityFileRela.get(id=kwargs['id'])
+    if activityFileRela:
+        return "操作成功",activityFileRela.to_dict()
     else:
         return "操作失败",'数据不存在'
 
 # 分页查询列表
 def getlist_func(**kwargs):
-    result = Activity.search(**kwargs)
+    result = ActivityFileRela.search(**kwargs)
     return "操作成功",result

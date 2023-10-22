@@ -1,5 +1,5 @@
 import json
-
+import uuid
 import pymysql
 from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
@@ -26,7 +26,11 @@ app.config.from_object('config')
 def check():
     x_forwarded_for = request.headers.get('X-Forwarded-For')
     header = str(request.headers.__dict__)
-    return {'ip':x_forwarded_for,'header':header,'check':'www'}
+    return {'ip':x_forwarded_for,'header':header,'check':'e22qeq2'}
+
+@app.route('/' + config.API_GATEWAY + '/uuid', methods=['GET'])
+def gen_uuid():
+    return {'data':str(uuid.uuid4()).replace("-","")}
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=9000,debug=True)

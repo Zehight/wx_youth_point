@@ -8,6 +8,8 @@ class Dept(db.Model,CRUDMixin):
     id = db.Column(db.String(50), primary_key=True,default=lambda: str(uuid.uuid4()).replace("-",""))
     name = db.Column(db.String(50))
     cover_id = db.Column(db.String(50))
+    create_by = db.Column(db.String(50), nullable=False)
+    create_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now())
 
 class User(db.Model, CRUDMixin):
     __tablename__ = 'user'
