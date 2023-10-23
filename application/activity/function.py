@@ -1,6 +1,6 @@
 from sqlalchemy.exc import IntegrityError
 
-from service.models import Activity,ActivityFileRela,Dept
+from service.models import Activity,ActivityFileRela,Dept,File,User
 
 
 # 新增
@@ -36,8 +36,14 @@ def getinfo_func(**kwargs):
         return "操作失败",'参数错误'
     activity = Activity.get(id=kwargs['id'])
     dept = Dept.get(id=activity.dept_id)
+    user = User.get(id=activity.create_by)
     file_list = ActivityFileRela.search(activity_id=activity.id)
+    if len(file_list) > 0:
+        for fileItem in file_list['list']:
+            file = File.get(id=str(fileItem['file_id']))
+            fileItem['file_name'] = file.file_name
     result = activity.to_dict()
+    result['create_by_name'] = user.real_name
     result['dept_name'] = dept.name
     result['list'] = file_list['list']
     if activity:
@@ -50,7 +56,13 @@ def getlist_func(**kwargs):
     result = Activity.search(**kwargs)
     for item in result['list']:
         dept = Dept.get(id=item['dept_id'])
+        user = User.get(id = item['create_by'])
+        item['create_by_name'] = user.real_name
         file_list = ActivityFileRela.search(activity_id=item['id'])
+        if len(file_list)>0:
+            for fileItem in file_list['list']:
+                file = File.get(id=str(fileItem['file_id']))
+                fileItem['file_name']  = file.file_name
         item['dept_name'] = dept.name
         item['list'] = file_list['list']
     return "操作成功",result
