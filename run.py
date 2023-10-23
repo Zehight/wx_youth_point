@@ -1,8 +1,11 @@
 import json
 import uuid
 import pymysql
+import requests
 from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
+
+
 import config
 
 from application import GATEWAY
@@ -19,6 +22,7 @@ app.config['autocommit_on_error'] = True
 pymysql.install_as_MySQLdb()
 db = SQLAlchemy(app)
 
+
 app.config.from_object('config')
 
 
@@ -31,6 +35,8 @@ def check():
 @app.route('/' + config.API_GATEWAY + '/uuid', methods=['GET'])
 def gen_uuid():
     return {'data':str(uuid.uuid4()).replace("-","")}
+
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=9000,debug=True)

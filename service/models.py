@@ -19,6 +19,7 @@ class User(db.Model, CRUDMixin):
     nike_name = db.Column(db.String(50))
     dept_id = db.Column(db.String(50))
     phone = db.Column(db.String(50))
+    sex = db.Column(db.String(50))
     email = db.Column(db.String(50))
     create_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now())
     search_fields = ['real_name','nike_name', 'phone','email','user_code']
@@ -44,7 +45,7 @@ class File(db.Model,CRUDMixin):
 class Activity(db.Model,CRUDMixin):
     __tablename__ = 'activity'
     id = db.Column(db.String(50), primary_key=True, default=lambda: str(uuid.uuid4()).replace("-", ""))
-    title = db.Column(db.String(50))
+    title = db.Column(db.String(255))
     content = db.Column(db.Text)
     dept_id = db.Column(db.String(50))
     activity_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now())
