@@ -8,4 +8,8 @@ def make_succ_response(code=200,data='',msg=''):
     data = json.dumps({'code': code, 'data': data,'msg':msg})
     return Response(data, mimetype='application/json')
 
+def make_error_response(code=500,data='',msg=''):
+    data = json.dumps({'code': code, 'data': data,'msg':msg})
+    return Response(data, mimetype='application/json')
+
 

@@ -43,7 +43,6 @@ def info():
 
 
 @activity.route('/list', methods=['POST'])
-@token_required
 def list():
     requestData = json.loads(request.data)
     msg, data = ActivityFuncs.getlist_func(**requestData)

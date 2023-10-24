@@ -21,6 +21,7 @@ class User(db.Model, CRUDMixin):
     phone = db.Column(db.String(50))
     sex = db.Column(db.String(50))
     email = db.Column(db.String(50))
+    permission = db.Column(db.String(50),default='user')
     create_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now())
     search_fields = ['real_name','nike_name', 'phone','email','user_code']
 
@@ -71,5 +72,15 @@ class Focus(db.Model,CRUDMixin):
     type = db.Column(db.String(1), nullable=True)  # 查看为0，点赞为1，收藏为2
     create_by = db.Column(db.String(50), nullable=False)
     create_time = db.Column(db.DateTime, nullable=False, default=datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+
+class Borrow(db.Model,CRUDMixin):
+    __tablename__ = 'borrow'
+    id = db.Column(db.String(50), primary_key=True, default=lambda: str(uuid.uuid4()).replace("-", ""))
+    book_name = db.Column(db.String(50))
+    type = db.Column(db.String(1), nullable=True, default='0')  # 借书为0，还书为1
+    create_by = db.Column(db.String(50), nullable=False)
+    create_time = db.Column(db.DateTime, nullable=False, default=datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+    return_time = db.Column(db.DateTime, nullable=False, default=datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+
 
 db.create_all()

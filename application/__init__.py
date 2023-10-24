@@ -10,6 +10,7 @@ from application.activity import activity
 from application.dept import dept
 from application.activityFileRela import activityFileRela
 from application.wxFile import wxFile
+from application.borrow import borrow
 
 GATEWAY.register_blueprint(user)
 GATEWAY.register_blueprint(file)
@@ -17,3 +18,4 @@ GATEWAY.register_blueprint(activity)
 GATEWAY.register_blueprint(dept)
 GATEWAY.register_blueprint(activityFileRela)
 GATEWAY.register_blueprint(wxFile)
+GATEWAY.register_blueprint(borrow)
