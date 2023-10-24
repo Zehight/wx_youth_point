@@ -58,7 +58,7 @@ def getlist_func(**kwargs):
         dept = Dept.get(id=item['dept_id'])
         user = User.get(id = item['create_by'])
         item['create_by_name'] = user.real_name
-        file_list = ActivityFileRela.search(activity_id=item['id'])
+        file_list = ActivityFileRela.search(activity_id=item['id'],rows=3,page=1)
         if len(file_list)>0:
             for fileItem in file_list['list']:
                 file = File.get(id=str(fileItem['file_id']))
