@@ -55,6 +55,7 @@ class Activity(db.Model,CRUDMixin):
     update_by = db.Column(db.String(50))
     create_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now())
     update_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now())
+    search_fields = ['title','content']
 
 class ActivityFileRela(db.Model,CRUDMixin):
     __tablename__ = 'activity_file_rela'

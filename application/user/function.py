@@ -34,7 +34,7 @@ def getToken_func(**kwargs):
     binding = Binding.get(open_id=open_id)
 
     if binding is None:
-        return "操作成功",""
+        return "操作失败",""
     else:
         user = User.get(id = binding.user_id)
         user_info = user.to_dict()
