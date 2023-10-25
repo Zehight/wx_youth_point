@@ -4,8 +4,7 @@
       "name": "wx_youth_point",
       "domain": "",
       "ip": "",
-      "mode": "compose",
-      "containerId": "77afad357955cb906b201d8c85fb4459fe888849e5cb1d8a5468c09cace98578"
+      "mode": "compose"
     }
   ],
   "config": {}
