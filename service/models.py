@@ -34,7 +34,7 @@ class Binding(db.Model, CRUDMixin):
 
 class File(db.Model,CRUDMixin):
     __tablename__ = 'file'
-    id = db.Column(db.String(50), primary_key=True,default=lambda: str(uuid.uuid4()).replace("-",""))
+    id = db.Column(db.String(100), primary_key=True,default=lambda: str(uuid.uuid4()).replace("-",""))
     status = db.Column(db.String(1), nullable=False, default="0")  # 删除为1，不删除为0
     file_name = db.Column(db.String(100), nullable=False)
     small_type = db.Column(db.String(1), nullable=False, default="0") #0:原图  1：缩放后的图
