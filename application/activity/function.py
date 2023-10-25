@@ -6,7 +6,7 @@ from service.models import Activity,ActivityFileRela,Dept,File,User
 # 新增
 def create_func(**kwargs):
     activity = Activity.create(**kwargs)
-    activity_id = activity.id
+    activity_id = activity['id']
     return "操作成功",activity_id
 
 

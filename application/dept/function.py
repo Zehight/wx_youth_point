@@ -6,7 +6,7 @@ from service.models import Dept
 # 新增
 def create_func(**kwargs):
     dept = Dept.create(**kwargs)
-    dept_id = dept.id
+    dept_id = dept['id']
     return "操作成功",dept_id
 
 

@@ -19,7 +19,7 @@ import config
 def create_func(real_file, **kwargs):
     file_name = real_file.filename
     file = File.create(file_name=file_name, **kwargs)
-    file_id  = file.id
+    file_id  = file['id']
     file_save_name = file_id + '_' + file_name
     client.put_object(
         Bucket=config.cos_bucket,
@@ -29,7 +29,7 @@ def create_func(real_file, **kwargs):
     )
 
     small_file = File.create(file_name=file_name, small_type='1', **kwargs)
-    small_file_id = small_file.id
+    small_file_id = small_file['id']
     file.update(small_id=small_file_id)
     small_file_save_name = small_file_id + '_' + file_name
     with Image.open(real_file) as small_real_file:

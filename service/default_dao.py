@@ -1,3 +1,5 @@
+import uuid
+
 from run import db
 from sqlalchemy import or_
 from datetime import datetime
@@ -18,11 +20,10 @@ class CRUDMixin:
 
     @classmethod
     def create(cls, **kwargs):
-        print('aaaa')
+        kwargs['id'] = str(uuid.uuid4()).replace("-", "")
         instance = cls(**kwargs)
-        db.session.add(instance)
-        db.session.commit()
-        return instance
+        instance.save()
+        return {'id':kwargs['id']}
 
     def update(self, commit=True, **kwargs):
         for attr, value in kwargs.items():
@@ -68,6 +69,7 @@ class CRUDMixin:
         db.session.add(self)
         if commit:
             db.session.commit()
+            db.session.close()
         return self
 
     @classmethod

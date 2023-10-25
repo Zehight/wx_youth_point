@@ -27,7 +27,7 @@ def create_func(**kwargs):
         if request_user:
             return "操作失败", "用户已绑定"
         user=User.create(real_name=real_name,dept_id=dept_id,user_code=user_code)
-        user_id = user.id
+        user_id = user['id']
         Binding.create(open_id=open_id,user_id=user_id)
         msg,data = UserFuncs.getToken_func(open_id=open_id)
         return "token",data

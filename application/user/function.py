@@ -78,7 +78,7 @@ def register_func(**kwargs):
     # TODO：验证工号姓名接口，公司接口
 
     user = User.create(**kwargs)
-    user_id = user.id
+    user_id = user['id']
     return "操作成功",user_id
 
 
