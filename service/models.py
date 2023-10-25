@@ -61,7 +61,7 @@ class ActivityFileRela(db.Model,CRUDMixin):
     __tablename__ = 'activity_file_rela'
     id = db.Column(db.String(50), primary_key=True, default=lambda: str(uuid.uuid4()).replace("-", ""))
     activity_id = db.Column(db.String(50))
-    file_id = db.Column(db.String(50))
+    file_id = db.Column(db.String(100))
     type = db.Column(db.String(1),default="0") # 0为活动中文件  1为活动中封面
     create_by = db.Column(db.String(50), nullable=False)
     create_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now())
