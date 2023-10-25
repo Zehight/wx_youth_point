@@ -20,7 +20,8 @@ class CRUDMixin:
 
     @classmethod
     def create(cls, **kwargs):
-        kwargs['id'] = str(uuid.uuid4()).replace("-", "")
+        if kwargs['id'] is None:
+            kwargs['id'] = str(uuid.uuid4()).replace("-", "")
         instance = cls(**kwargs)
         instance.save()
         return {'id':kwargs['id']}
