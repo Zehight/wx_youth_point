@@ -50,7 +50,7 @@ class Activity(db.Model,CRUDMixin):
     content = db.Column(db.Text)
     dept_id = db.Column(db.String(50))
     activity_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now())
-    carousel = db.Column(db.String(1),default='0') #是否轮播
+    carousel = db.Column(db.String(1),default='1') #是否轮播
     create_by = db.Column(db.String(50), nullable=False)
     update_by = db.Column(db.String(50))
     create_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now())
