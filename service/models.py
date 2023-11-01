@@ -72,7 +72,7 @@ class Focus(db.Model,CRUDMixin):
     activity_id = db.Column(db.String(50))
     type = db.Column(db.String(1), nullable=True)  # 查看为0，点赞为1，收藏为2
     create_by = db.Column(db.String(50), nullable=False)
-    create_time = db.Column(db.DateTime, nullable=False, default=datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+    create_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now())
 
 class Borrow(db.Model,CRUDMixin):
     __tablename__ = 'borrow'
@@ -80,8 +80,8 @@ class Borrow(db.Model,CRUDMixin):
     book_name = db.Column(db.String(50))
     type = db.Column(db.String(1), nullable=True, default='0')  # 借书为0，还书为1
     create_by = db.Column(db.String(50), nullable=False)
-    create_time = db.Column(db.DateTime, nullable=False, default=datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-    return_time = db.Column(db.DateTime, nullable=False, default=datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+    create_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now())
+    return_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now())
 
 
 db.create_all()
