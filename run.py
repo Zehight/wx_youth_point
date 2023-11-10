@@ -3,6 +3,7 @@ import uuid
 import pymysql
 import requests
 from flask import Flask, request, send_file
+from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 
 import config
@@ -10,6 +11,7 @@ import config
 from application import GATEWAY
 
 app = Flask(__name__, instance_relative_config=True)
+CORS(app)
 app.register_blueprint(GATEWAY)
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

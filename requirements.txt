@@ -14,3 +14,4 @@ bcrypt == 4.0.1
 Pillow~=9.5.0
 cos-python-sdk-v5
 gunicorn == 21.2.0
+flask-cors == 4.0.0
