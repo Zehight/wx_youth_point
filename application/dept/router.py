@@ -42,7 +42,6 @@ def info():
 
 
 @dept.route('/list', methods=['POST'])
-@token_required
 def list():
     requestData = json.loads(request.data)
     msg, data = DeptFuncs.getlist_func(**requestData)
