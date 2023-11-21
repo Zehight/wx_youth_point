@@ -13,6 +13,7 @@ from application.wxFile import wxFile
 from application.borrow import borrow
 from application.power import power
 from application.question import question
+from application.learn import learn
 
 GATEWAY.register_blueprint(user)
 GATEWAY.register_blueprint(file)
@@ -23,3 +24,4 @@ GATEWAY.register_blueprint(wxFile)
 GATEWAY.register_blueprint(borrow)
 GATEWAY.register_blueprint(power)
 GATEWAY.register_blueprint(question)
+GATEWAY.register_blueprint(learn)
