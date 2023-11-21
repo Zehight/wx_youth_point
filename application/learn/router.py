@@ -41,7 +41,6 @@ def info():
 
 
 @learn.route('/list', methods=['POST'])
-@token_required
 def list():
     requestData = json.loads(request.data)
     msg, data = LearnFuncs.getlist_func(**requestData)
