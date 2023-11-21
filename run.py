@@ -26,7 +26,6 @@ db = SQLAlchemy(app)
 
 app.config.from_object('config')
 
-
 @app.route('/' + config.API_GATEWAY + '/health/check', methods=['GET'])
 def check():
     x_forwarded_for = request.headers.get('X-Forwarded-For')

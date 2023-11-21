@@ -16,6 +16,8 @@ from application.question import question
 from application.learn import learn
 from application.action import action
 
+
+
 GATEWAY.register_blueprint(user)
 GATEWAY.register_blueprint(file)
 GATEWAY.register_blueprint(activity)
