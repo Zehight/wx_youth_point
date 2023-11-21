@@ -55,8 +55,8 @@ class CRUDMixin:
         return result
 
     @classmethod
-    def count(cls):
-        return cls.query.count()
+    def count(cls,**kwargs):
+        return cls.query.filter_by(**kwargs).count()
 
     @classmethod
     def filter(cls, *criterion):

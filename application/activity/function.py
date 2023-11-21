@@ -1,6 +1,6 @@
 from sqlalchemy.exc import IntegrityError
 
-from service.models import Activity,ActivityFileRela,Dept,File,User
+from service.models import Activity,ActivityFileRela,Dept,File,User,Action
 
 
 # 新增
@@ -35,6 +35,7 @@ def getinfo_func(**kwargs):
     if 'id' not in kwargs:
         return "操作失败",'参数错误'
     activity = Activity.get(id=kwargs['id'])
+    view_num = Action.count(article_id = kwargs['id'])
     dept = Dept.get(id=activity.dept_id)
     user = User.get(id=activity.create_by)
     file_list = ActivityFileRela.search(activity_id=activity.id)
@@ -45,6 +46,7 @@ def getinfo_func(**kwargs):
     result = activity.to_dict()
     result['create_by_name'] = user.real_name
     result['dept_name'] = dept.name
+    result['view_num'] = view_num
     result['list'] = file_list['list']
     if activity:
         return "操作成功",result
@@ -58,6 +60,7 @@ def getlist_func(**kwargs):
         dept = Dept.get(id=item['dept_id'])
         user = User.get(id = item['create_by'])
         item['create_by_name'] = user.real_name
+        item['view_num'] = Action.count(article_id = item['id'])
         file_list = ActivityFileRela.search(activity_id=item['id'],rows=3,page=1)
         if len(file_list)>0:
             for fileItem in file_list['list']:

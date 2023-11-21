@@ -1,49 +1,50 @@
 import json
 from datetime import datetime
 from flask import request
-import application.learn.function as LearnFuncs
-from application.learn import learn
+import application.action.function as ActionFuncs
+from application.action import action
 import service.reponse as MyResponse
 from service.login import token_required
 
 
-@learn.route('/add', methods=['POST'])
+@action.route('/add', methods=['POST'])
 @token_required
 def add():
     requestData = json.loads(request.data)
-    msg, data = LearnFuncs.create_func(**requestData)
+    requestData['create_by'] = request.token_info['id']
+    msg, data = ActionFuncs.create_func(**requestData)
     return MyResponse.make_succ_response(msg=msg, data=data)
 
 
-@learn.route('/update', methods=['POST'])
+@action.route('/update', methods=['POST'])
 @token_required
 def update():
     requestData = json.loads(request.data)
-    msg, data = LearnFuncs.update_func(**requestData)
+    msg, data = ActionFuncs.update_func(**requestData)
     return MyResponse.make_succ_response(msg=msg, data=data)
 
 
-@learn.route('/delete', methods=['POST'])
+@action.route('/delete', methods=['POST'])
 @token_required
 def delete():
     requestData = json.loads(request.data)
-    msg, data = LearnFuncs.delete_func(**requestData)
+    msg, data = ActionFuncs.delete_func(**requestData)
     return MyResponse.make_succ_response(msg=msg, data=data)
 
 
-@learn.route('/info', methods=['POST'])
+@action.route('/info', methods=['POST'])
 @token_required
 def info():
     requestData = json.loads(request.data)
-    msg, data = LearnFuncs.getinfo_func(**requestData)
+    msg, data = ActionFuncs.getinfo_func(**requestData)
     return MyResponse.make_succ_response(msg=msg, data=data)
 
 
 
-@learn.route('/list', methods=['POST'])
+@action.route('/list', methods=['POST'])
 @token_required
 def list():
     requestData = json.loads(request.data)
-    msg, data = LearnFuncs.getlist_func(**requestData)
+    msg, data = ActionFuncs.getlist_func(**requestData)
     print(msg,data)
     return MyResponse.make_succ_response(msg=msg, data=data)

@@ -108,5 +108,13 @@ class Learn(db.Model,CRUDMixin):
     learn_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now())
     create_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now())
 
+class Action(db.Model,CRUDMixin):
+    __tablename__ = 'action'
+    id = db.Column(db.String(50), primary_key=True, default=lambda: str(uuid.uuid4()).replace("-", ""))
+    article_id = db.Column(db.String(255))
+    type = db.Column(db.String(1), nullable=True, default='0')  # 查看为0，收藏为1，点赞为2
+    create_by = db.Column(db.String(50), nullable=False)
+    create_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now())
+
 
 db.create_all()
