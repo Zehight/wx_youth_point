@@ -85,17 +85,17 @@ class Borrow(db.Model,CRUDMixin):
 
 
 
-class Question(db.Model,CRUDMixin):
-    __tablename__ = 'question'
+class Learn(db.Model,CRUDMixin):
+    __tablename__ = 'learn'
     id = db.Column(db.String(50), primary_key=True, default=lambda: str(uuid.uuid4()).replace("-", ""))
-    input_dept_name = db.Column(db.String(50))
-    age = db.Column(db.Integer())
-    question_one = db.Column(db.Text())
-    question_two = db.Column(db.Text())
-    question_three = db.Column(db.Text())
-    question_four = db.Column(db.Text())
-    question_five = db.Column(db.Text())
+    title = db.Column(db.String(255))
+    content = db.Column(db.Text)
+    block = db.Column(db.String(255))
+    author = db.Column(db.String(255))
+    learn_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now())
     create_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now())
+
+
 
 
 db.create_all()
