@@ -23,8 +23,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://{}:{}@{}/{}'.format(config.user
 
 @app.errorhandler(SQLAlchemyError)
 def handle_database_error(e):
-    db.session.rollback()
-    return 'database error'
+    db.session.remove()
+    return 'database error'+str(e)
 
 
 pymysql.install_as_MySQLdb()
