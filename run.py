@@ -19,7 +19,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://{}:{}@{}/{}'.format(config.username, config.password,
                                                                      config.db_address, config.data_base)
 
-app.config['autocommit_on_error'] = True
+app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {"autocommit": True}
 
 pymysql.install_as_MySQLdb()
 db = SQLAlchemy(app)
