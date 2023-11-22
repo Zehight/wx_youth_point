@@ -5,6 +5,7 @@ import requests
 from flask import Flask, request, send_file
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.exc import SQLAlchemyError
 
 import config
 
@@ -19,12 +20,18 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://{}:{}@{}/{}'.format(config.username, config.password,
                                                                      config.db_address, config.data_base)
 
-app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {"autocommit": True}
+
+@app.errorhandler(SQLAlchemyError)
+def handle_database_error(e):
+    db.session.rollback()
+    return 'database error'
+
 
 pymysql.install_as_MySQLdb()
 db = SQLAlchemy(app)
 
 app.config.from_object('config')
+
 
 @app.route('/' + config.API_GATEWAY + '/health/check', methods=['GET'])
 def check():
@@ -49,6 +56,8 @@ def get_file(filename):
 #     app.run(host='0.0.0.0', port=9000, debug=True)
 
 from gunicorn.app.base import BaseApplication
+
+
 class GunicornApp(BaseApplication):
     def __init__(self, app):
         self.options = {
