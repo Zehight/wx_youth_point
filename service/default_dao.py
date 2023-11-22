@@ -56,7 +56,10 @@ class CRUDMixin:
 
     @classmethod
     def count(cls,**kwargs):
-        return cls.query.filter_by(**kwargs).count()
+        query = cls.query
+        result = query.filter_by(**kwargs).count()
+        query.session.close()
+        return result
 
     @classmethod
     def filter(cls, *criterion):
