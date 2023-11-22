@@ -40,10 +40,6 @@ def check():
     return {'ip': x_forwarded_for, 'header': header, 'check': 'e22qeq2'}
 
 
-# @app.route('/' + config.API_GATEWAY + '/uuid', methods=['GET'])
-# def gen_uuid():
-#     return {'data':str(uuid.uuid4()).replace("-","")}
-
 @app.route('/' + config.API_GATEWAY + '/<filename>', methods=['GET'])
 def get_file(filename):
     if filename == 'uuid':
@@ -54,6 +50,7 @@ def get_file(filename):
 
 # if __name__ == '__main__':
 #     app.run(host='0.0.0.0', port=9000, debug=True)
+
 
 from gunicorn.app.base import BaseApplication
 
