@@ -26,11 +26,13 @@ db = SQLAlchemy(app)
 app.config.from_object('config')
 
 
+
 @app.teardown_request
-def teardown_request(exception=None):
-    if exception:
-        db.session.rollback()
+def session_clear(exception=None):
     db.session.remove()
+    if exception and db.session.is_active:
+        db.session.rollback()
+
 
 @app.route('/' + config.API_GATEWAY + '/health/check', methods=['GET'])
 def check():
