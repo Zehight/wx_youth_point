@@ -17,8 +17,10 @@ app.register_blueprint(GATEWAY)
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://{}:{}@{}/{}?pool_pre_ping=true'.format(config.username, config.password,
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://{}:{}@{}/{}'.format(config.username, config.password,
                                                                      config.db_address, config.data_base)
+
+app.config['SQLALCHEMY_POOL_PRE_PING'] = True
 
 pymysql.install_as_MySQLdb()
 db = SQLAlchemy(app)
@@ -49,29 +51,29 @@ def get_file(filename):
         return send_file('Fr5U1zMe9k.txt')
 
 
-# if __name__ == '__main__':
-#     app.run(host='0.0.0.0', port=9000, debug=True)
-
-
-from gunicorn.app.base import BaseApplication
-
-
-class GunicornApp(BaseApplication):
-    def __init__(self, app):
-        self.options = {
-            'bind': '0.0.0.0:9000'
-        }
-        self.application = app
-        super().__init__()
-
-    def load_config(self):
-        for key, value in self.options.items():
-            self.cfg.set(key, value)
-
-    def load(self):
-        return self.application
-
-
 if __name__ == '__main__':
-    gunicorn_app = GunicornApp(app)
-    gunicorn_app.run()
+    app.run(host='0.0.0.0', port=9000)
+
+
+# from gunicorn.app.base import BaseApplication
+#
+#
+# class GunicornApp(BaseApplication):
+#     def __init__(self, app):
+#         self.options = {
+#             'bind': '0.0.0.0:9000'
+#         }
+#         self.application = app
+#         super().__init__()
+#
+#     def load_config(self):
+#         for key, value in self.options.items():
+#             self.cfg.set(key, value)
+#
+#     def load(self):
+#         return self.application
+#
+#
+# if __name__ == '__main__':
+#     gunicorn_app = GunicornApp(app)
+#     gunicorn_app.run()
