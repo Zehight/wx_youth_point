@@ -28,9 +28,9 @@ db = SQLAlchemy(app)
 app.config.from_object('config')
 
 
-
 @app.teardown_request
 def session_clear(exception=None):
+    db.session.close()
     db.session.remove()
     if exception and db.session.is_active:
         db.session.rollback()
@@ -53,7 +53,6 @@ def get_file(filename):
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=9000)
-
 
 # from gunicorn.app.base import BaseApplication
 #

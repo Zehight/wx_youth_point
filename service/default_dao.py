@@ -49,21 +49,21 @@ class CRUDMixin:
     def get(cls, **kwargs):
         query = cls.query
         result = query.filter_by(**kwargs).first()
-        # query.session.close()
+        query.session.close()
         return result
 
     @classmethod
     def get_all(cls, **kwargs):
         query = cls.query
         result = query.filter_by(**kwargs).all()
-        # query.session.close()
+        query.session.close()
         return result
 
     @classmethod
     def count(cls,**kwargs):
         query = cls.query
         result = query.filter_by(**kwargs).count()
-        # query.session.close()
+        query.session.close()
         return result
 
     @classmethod
@@ -101,7 +101,7 @@ class CRUDMixin:
             rows = int(rows)
             items = query.paginate(page, rows, error_out=False)
             result = [item.to_dict() for item in items.items]
-        # query.session.close()
+        query.session.close()
         return {
             'page': page,
             'rows': rows,
