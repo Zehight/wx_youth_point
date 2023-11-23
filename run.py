@@ -20,14 +20,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://{}:{}@{}/{}'.format(config.username, config.password,
                                                                      config.db_address, config.data_base)
 
-
-@app.teardown_request
-def teardown_request(exception=None):
-    if exception:
-        db.session.rollback()
-    db.session.remove()
-
-
 pymysql.install_as_MySQLdb()
 db = SQLAlchemy(app)
 
