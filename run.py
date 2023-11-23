@@ -17,7 +17,7 @@ app.register_blueprint(GATEWAY)
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://{}:{}@{}/{}'.format(config.username, config.password,
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://{}:{}@{}/{}?pool_pre_ping=true'.format(config.username, config.password,
                                                                      config.db_address, config.data_base)
 
 pymysql.install_as_MySQLdb()
@@ -25,6 +25,12 @@ db = SQLAlchemy(app)
 
 app.config.from_object('config')
 
+
+@app.teardown_request
+def teardown_request(exception=None):
+    if exception:
+        db.session.rollback()
+    db.session.remove()
 
 @app.route('/' + config.API_GATEWAY + '/health/check', methods=['GET'])
 def check():
