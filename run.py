@@ -20,7 +20,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://{}:{}@{}/{}'.format(config.username, config.password,
                                                                      config.db_address, config.data_base)
 
-app.config['SQLALCHEMY_POOL_PRE_PING'] = True
+app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_pre_ping': True}
 
 pymysql.install_as_MySQLdb()
 db = SQLAlchemy(app)
