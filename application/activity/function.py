@@ -65,6 +65,8 @@ def getinfo_func(**kwargs):
 
 # 分页查询列表
 def getlist_func(**kwargs):
+    create_by = kwargs['create_by']
+    del kwargs['create_by']
     result = Activity.search(**kwargs)
     for item in result['list']:
         dept = Dept.get(id=item['dept_id'])
@@ -73,7 +75,7 @@ def getlist_func(**kwargs):
 
         # 点赞，收藏，查看
         item['view_num'] = Action.count(article_id=item['id'])
-        ActionRes = Action.search(article_id=item['id'], create_by=kwargs['create_by'])
+        ActionRes = Action.search(article_id=item['id'], create_by=create_by)
         ActionList = ActionRes['list']
         item['collection'] = sum(1 for d in ActionList if d.get('type') == '1')
         item['like'] = sum(1 for d in ActionList if d.get('type') == '2')
