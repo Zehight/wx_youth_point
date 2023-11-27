@@ -48,7 +48,10 @@ class Activity(db.Model,CRUDMixin):
     id = db.Column(db.String(50), primary_key=True, default=lambda: str(uuid.uuid4()).replace("-", ""))
     title = db.Column(db.String(255))
     content = db.Column(db.Text)
-    dept_id = db.Column(db.String(50))
+    dept_id = db.Column(db.String(50),default="000000")
+    block = db.Column(db.String(255),default="活动")
+    author = db.Column(db.String(255),default="共青团中央")
+    type = db.Column(db.String(255),default='活动')
     activity_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now())
     carousel = db.Column(db.String(1),default='1') #是否轮播
     create_by = db.Column(db.String(50), nullable=False)
