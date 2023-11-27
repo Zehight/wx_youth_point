@@ -36,15 +36,17 @@ def delete():
 @activity.route('/info', methods=['POST'])
 @token_required
 def info():
+    create_by = request.token_info['id']
     requestData = json.loads(request.data)
-    msg, data = ActivityFuncs.getinfo_func(**requestData)
+    msg, data = ActivityFuncs.getinfo_func(**requestData,create_by=create_by)
     return MyResponse.make_succ_response(msg=msg, data=data)
 
 
 
 @activity.route('/list', methods=['POST'])
+@token_required
 def list():
+    create_by = request.token_info['id']
     requestData = json.loads(request.data)
-    msg, data = ActivityFuncs.getlist_func(**requestData)
-    print(msg,data)
+    msg, data = ActivityFuncs.getlist_func(**requestData,create_by=create_by)
     return MyResponse.make_succ_response(msg=msg, data=data)
