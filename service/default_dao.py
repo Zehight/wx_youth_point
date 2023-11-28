@@ -97,7 +97,7 @@ class CRUDMixin:
         query = cls.query
         if hasattr(cls, 'search_fields') and keyword:
             query = query.filter(or_(*[getattr(cls, field).ilike(f'%{keyword}%') for field in cls.search_fields]))
-        query = query.filter(and_(cls.create_time.between(start_time, end_time), **kwargs)).order_by(cls.create_time.desc())
+        query = query.filter(and_(cls.create_time.between(start_time, end_time), *[getattr(cls, key) == value for key, value in kwargs.items()])).order_by(cls.create_time.desc())
         total = query.count()
         if page is None or rows is None:
             page=1
