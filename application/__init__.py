@@ -15,6 +15,7 @@ from application.power import power
 from application.question import question
 from application.learn import learn
 from application.action import action
+from application.comment import comment
 
 
 
@@ -29,3 +30,4 @@ GATEWAY.register_blueprint(power)
 GATEWAY.register_blueprint(question)
 GATEWAY.register_blueprint(learn)
 GATEWAY.register_blueprint(action)
+GATEWAY.register_blueprint(comment)
