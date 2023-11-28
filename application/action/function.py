@@ -53,9 +53,12 @@ def getlist_func(**kwargs):
     result['list'] = get_latest_records(result['list'])
     for item in result['list']:
         articleInfo = Activity.get(id=item['article_id'])
-        articleInfoDict = articleInfo.to_dict()
-        articleInfoDict['action_id'] = item['id']
-        articleInfoDict['type'] = item['type']
-        articleInfoDict['action_time'] = item['create_time']
-        result['list'][result['list'].index(item)] = articleInfoDict
+        if(articleInfo):
+            articleInfoDict = articleInfo.to_dict()
+            articleInfoDict['action_id'] = item['id']
+            articleInfoDict['type'] = item['type']
+            articleInfoDict['action_time'] = item['create_time']
+            result['list'][result['list'].index(item)] = articleInfoDict
+        else:
+            result['list'][result['list'].index(item)] = {}
     return "操作成功", result
