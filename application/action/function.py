@@ -56,8 +56,9 @@ def getlist_func(**kwargs):
         if(articleInfo):
             articleInfoDict = articleInfo.to_dict()
             articleInfoDict['action_id'] = item['id']
-            articleInfoDict['type'] = item['type']
+            articleInfoDict['action_type'] = item['type']
             articleInfoDict['action_time'] = item['create_time']
+            articleInfoDict['action_user'] = item['create_by']
             result['list'][result['list'].index(item)] = articleInfoDict
         else:
             result['list'][result['list'].index(item)] = {}
