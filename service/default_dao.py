@@ -3,7 +3,7 @@ import uuid
 from sqlalchemy.exc import SQLAlchemyError
 
 from run import db
-from sqlalchemy import or_
+from sqlalchemy import or_, and_
 from datetime import datetime
 import logging
 
@@ -86,10 +86,18 @@ class CRUDMixin:
 
     @classmethod
     def search(cls, keyword = '',page=None, rows=None,**kwargs):
+        start_time = '2022-01-01 23:59:59'
+        end_time = '2100-01-01 23:59:59'
+        if 'start_time' in kwargs:
+            start_time = kwargs['start_time']
+            del kwargs['start_time']
+        if 'end_time' in kwargs:
+            end_time = kwargs['end_time']
+            del kwargs['end_time']
         query = cls.query
         if hasattr(cls, 'search_fields') and keyword:
             query = query.filter(or_(*[getattr(cls, field).ilike(f'%{keyword}%') for field in cls.search_fields]))
-        query = query.filter_by(**kwargs).order_by(cls.create_time.desc())
+        query = query.filter(and_(cls.create_time.between(start_time, end_time), **kwargs)).order_by(cls.create_time.desc())
         total = query.count()
         if page is None or rows is None:
             page=1
