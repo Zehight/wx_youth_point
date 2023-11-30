@@ -88,3 +88,11 @@ def getlist_func(**kwargs):
         item['dept_name'] = dept.name
         item['list'] = file_list['list']
     return "操作成功", result
+
+def getLearn_func():
+    result1 = Activity.search(type="学习",block="思想引领",page=1,rows=5)
+    result2 = Activity.search(type="学习",block="业务知识",page=1,rows=5)
+    result3 = Activity.search(type="学习",block="团务百科",page=1,rows=5)
+    result4 = Activity.search(type="学习",block="主题活动",page=1,rows=5)
+    result = [{"name":"思想引领","list":result1['list']},{"name":"业务知识","list":result2['list']},{"name":"团务百科","list":result3['list']},{"name":"主题活动","list":result4['list']}]
+    return "操作成功",{"total":20,"result":result}

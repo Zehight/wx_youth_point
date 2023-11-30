@@ -63,3 +63,4 @@ def getlist_func(**kwargs):
         else:
             result['list'][result['list'].index(item)] = {}
     return "操作成功", result
+

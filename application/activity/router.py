@@ -50,3 +50,9 @@ def list():
     requestData = json.loads(request.data)
     msg, data = ActivityFuncs.getlist_func(**requestData,create_by=create_by)
     return MyResponse.make_succ_response(msg=msg, data=data)
+
+@activity.route('/learnList', methods=['POST'])
+@token_required
+def list():
+    msg, data = ActivityFuncs.getLearn_func()
+    return MyResponse.make_succ_response(msg=msg, data=data)
