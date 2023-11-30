@@ -1,7 +1,8 @@
 import json
 import uuid
 import requests
-
+import re
+import code
 answers = {}
 
 def genStreamAnswer(question, id):
@@ -12,15 +13,19 @@ def genStreamAnswer(question, id):
     response = requests.post(f"https://gpt.miragari.com/pro/stream/ask",payload,stream=True)
     for chunk in response.iter_lines():
         chunkStr = chunk.decode('utf-8')
-        if chunkStr.startswith('data: {'):
-            chunkJson = json.loads(chunkStr[6:])
-            print(chunkJson)
-            if type(chunkJson) == dict:
-                chunkRes = chunkJson['choices'][0]['delta']
-                if chunkJson['choices'][0]['finish_reason'] == 'stop':
-                    answers[id] = '完成：'+answers[id]
-                if 'content' in chunkRes and 'role' not in chunkRes:
-                    answers[id] += chunkRes['content']
+        if chunkStr.startswith('data:{'):
+            # chunkJson = json.loads(chunkStr[6:])
+            regex = re.compile(r'{"content": "(.*?)"}')
+            result = re.findall(regex,chunkStr)
+            if len(result) >0:
+                 answers[id] += result[0].encode('utf-8').decode('unicode_escape')
+    answers[id] = '完成：' + answers[id]
+            # if type(chunkJson) == dict:
+            #     chunkRes = chunkJson['choices'][0]['delta']
+            #     if chunkJson['choices'][0]['finish_reason'] == 'stop':
+            #         answers[id] = '完成：'+answers[id]
+            #     if 'content' in chunkRes and 'role' not in chunkRes:
+            #         answers[id] += chunkRes['content']
 
 
 import threading
@@ -41,6 +46,3 @@ def getStreamAnswer(id):
     if result.startswith('完成：'):
         del answers[id]
     return {'result': result}
-
-
-

@@ -1,4 +1,4 @@
-import time
+# import time
 from functools import wraps
 
 import jwt
@@ -22,8 +22,8 @@ def token_required(func):
 
         try:
             payload = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
-            if payload.get('exp') < int(time.time()):
-                return jsonify({'message': 'Token expired'}), 401
+            # if payload.get('exp') < int(time.time()):
+            #     return jsonify({'message': 'Token expired'}), 401
             request.token_info = payload
         except (jwt.ExpiredSignatureError, jwt.InvalidSignatureError):
             return jsonify({'message': 'Invalid token', 'code': 401})
