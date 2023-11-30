@@ -53,6 +53,6 @@ def list():
 
 @activity.route('/learnList', methods=['POST'])
 @token_required
-def list():
+def learnList():
     msg, data = ActivityFuncs.getLearn_func()
     return MyResponse.make_succ_response(msg=msg, data=data)
