@@ -1,3 +1,5 @@
+import time
+
 from sqlalchemy.exc import IntegrityError
 
 from service.models import Activity, ActivityFileRela, Dept, File, User, Action
@@ -90,9 +92,15 @@ def getlist_func(**kwargs):
     return "操作成功", result
 
 def getLearn_func():
+    time1 = time.time()
     result1 = Activity.search(type="学习",block="思想引领",page=1,rows=5)
     result2 = Activity.search(type="学习",block="业务知识",page=1,rows=5)
     result3 = Activity.search(type="学习",block="团务百科",page=1,rows=5)
     result4 = Activity.search(type="学习",block="主题活动",page=1,rows=5)
-    result = [{"name":"思想引领","list":result1['list']},{"name":"业务知识","list":result2['list']},{"name":"团务百科","list":result3['list']},{"name":"主题活动","list":result4['list']}]
-    return "操作成功",{"total":20,"result":result}
+    result = result1['list']+result2['list']+result3['list']+result4['list']
+    time2 = time.time()
+    for item in result:
+        item['view_num'] = Action.count(article_id=item['id'])
+    time3 = time.time()
+    # result = [{"name":"思想引领","list":result1['list']},{"name":"业务知识","list":result2['list']},{"name":"团务百科","list":result3['list']},{"name":"主题活动","list":result4['list']}]
+    return "操作成功",{"total":20,"result":result,"xunhuan_time":time3-time2,"total_time":time3-time1}
