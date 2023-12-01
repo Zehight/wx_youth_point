@@ -122,8 +122,9 @@ class Action(db.Model,CRUDMixin):
 class Comment(db.Model,CRUDMixin):
     __tablename__ = 'comment'
     id = db.Column(db.String(50), primary_key=True, default=lambda: str(uuid.uuid4()).replace("-", ""))
-    activity_id = db.Column(db.String(255))
-    reply_id = db.Column(db.String(255))
+    activity_id = db.Column(db.String(255)) #帖子ID
+    comment_main_id = db.Column(db.String(255)) #楼主ID
+    reply_id = db.Column(db.String(255)) #回复ID
     content = db.Column(db.String(255))
     create_by = db.Column(db.String(50), nullable=False)
     create_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now())

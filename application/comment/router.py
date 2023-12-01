@@ -46,5 +46,4 @@ def info():
 def list():
     requestData = json.loads(request.data)
     msg, data = CommentFuncs.getlist_func(**requestData)
-    print(msg,data)
     return MyResponse.make_succ_response(msg=msg, data=data)
