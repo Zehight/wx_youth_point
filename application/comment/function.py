@@ -50,7 +50,8 @@ def getlist_func(**kwargs):
     for reply in result['list']:
         reply['create_by_name'] = getUser(reply['create_by'])
         if reply['reply_id'] is not None:
-            reply['reply_user_name'] = getUser(reply['reply_id'])
+            comment = Comment.get(id = reply['reply_id'])
+            reply['reply_user_name'] = getUser(comment.create_by)
         else:
             reply['reply_user_name'] = ''
     return "操作成功", result
@@ -64,9 +65,9 @@ def get_list_by_activity(**kwargs):
         follow_reply_list = Comment.search(comment_main_id=main_reply['id'], page=1, rows=3)
         for follow_reply in follow_reply_list['list']:
             follow_reply['create_by_name'] = getUser(follow_reply['create_by'])
-
             if follow_reply['reply_id'] is not None:
-                follow_reply['reply_user_name'] = getUser(follow_reply['reply_id'])
+                comment = Comment.get(id=follow_reply['reply_id'])
+                follow_reply['reply_user_name'] = getUser(comment.create_by)
             else:
                 follow_reply['reply_user_name'] = ''
 
