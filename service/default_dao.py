@@ -85,7 +85,7 @@ class CRUDMixin:
         return self
 
     @classmethod
-    def search(cls, keyword = '',page=None, rows=None,**kwargs):
+    def search(cls, keyword = '',page=None, rows=None,order_method='desc',**kwargs):
         start_time = '2022-01-01 23:59:59'
         end_time = '2100-01-01 23:59:59'
         if 'start_time' in kwargs:
@@ -97,7 +97,10 @@ class CRUDMixin:
         query = cls.query
         if hasattr(cls, 'search_fields') and keyword:
             query = query.filter(or_(*[getattr(cls, field).ilike(f'%{keyword}%') for field in cls.search_fields]))
-        query = query.filter(and_(cls.create_time.between(start_time, end_time), *[getattr(cls, key) == value for key, value in kwargs.items()])).order_by(cls.create_time.desc())
+        if order_method == 'desc':
+            query = query.filter(and_(cls.create_time.between(start_time, end_time), *[getattr(cls, key) == value for key, value in kwargs.items()])).order_by(cls.create_time.desc())
+        else:
+            query = query.filter(and_(cls.create_time.between(start_time, end_time), *[getattr(cls, key) == value for key, value in kwargs.items()])).order_by(cls.create_time)
         total = query.count()
         if page is None or rows is None:
             page=1

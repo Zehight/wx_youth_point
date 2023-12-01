@@ -46,7 +46,7 @@ def getUser(user_id):
 
 # 分页查询列表
 def getlist_func(**kwargs):
-    result = Comment.search(**kwargs)
+    result = Comment.search(order_method='asc',**kwargs)
     for reply in result['list']:
         reply['create_by_name'] = getUser(reply['create_by'])
         if reply['reply_id'] is not None:
@@ -58,7 +58,7 @@ def getlist_func(**kwargs):
 
 
 def get_list_by_activity(**kwargs):
-    result = Comment.search(**kwargs)
+    result = Comment.search(order_method='asc',**kwargs)
     for main_reply in result['list']:
         main_reply['create_by_name'] = getUser(main_reply['create_by'])
         main_reply['reply_user_name'] = ''
