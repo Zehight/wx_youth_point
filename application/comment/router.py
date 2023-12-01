@@ -40,10 +40,17 @@ def info():
     return MyResponse.make_succ_response(msg=msg, data=data)
 
 
-
 @comment.route('/list', methods=['POST'])
 @token_required
 def list():
     requestData = json.loads(request.data)
     msg, data = CommentFuncs.getlist_func(**requestData)
+    return MyResponse.make_succ_response(msg=msg, data=data)
+
+
+@comment.route('/list_by_activity', methods=['POST'])
+@token_required
+def list_by_activity():
+    requestData = json.loads(request.data)
+    msg, data = CommentFuncs.get_list_by_activity(**requestData)
     return MyResponse.make_succ_response(msg=msg, data=data)
