@@ -16,11 +16,9 @@ SECRET_KEY = '12dwafdsgefdsvdfgrteweddsfthrefsdvfbtrhrerdsdvbthrefdvfbthedsdvfgr
 
 def generate_token(kwargs):
     # 设置过期时间为 48 小时后
-    expire_time = datetime.utcnow() + timedelta(hours=48)
     kwargs['pwd']="嘿嘿🤭，你猜？"
     payload = {
-        **kwargs,
-        'exp': expire_time
+        **kwargs
     }
     token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
     return token
