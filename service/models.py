@@ -21,6 +21,7 @@ class User(db.Model, CRUDMixin):
     phone = db.Column(db.String(50))
     sex = db.Column(db.String(50))
     email = db.Column(db.String(50))
+    avatar = db.Column(db.String(50))
     permission = db.Column(db.String(50),default='user')
     create_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now())
     search_fields = ['real_name','nike_name', 'phone','email','user_code']

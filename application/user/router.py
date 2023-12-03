@@ -25,3 +25,11 @@ def binding():
     requestData = json.loads(request.data)
     msg,data = UserFuncs.binding_func(open_id=open_id,**requestData)
     return MyResponse.make_succ_response(msg=msg,data = data)
+
+
+@user.route('/update',methods=['POST'])
+@token_required
+def update():
+    requestData = json.loads(request.data)
+    msg,data = UserFuncs.update(**requestData)
+    return MyResponse.make_succ_response(msg=msg,data = data)
