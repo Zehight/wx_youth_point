@@ -39,6 +39,10 @@ def getinfo_func(**kwargs):
 
     dept = Dept.get(id=activity.dept_id)
     user = User.get(id=activity.create_by)
+    file = File.get(id=user.avatar)
+    avatar_name = file.file_name
+
+
     file_list = ActivityFileRela.search(activity_id=activity.id)
 
     # 点赞，收藏，查看
@@ -61,6 +65,7 @@ def getinfo_func(**kwargs):
     result = activity.to_dict()
     result['create_by_name'] = user.real_name
     result['nike_name'] = user.nike_name
+    result['avatar_name'] = avatar_name
     result['dept_name'] = dept.name
     result['view_num'] = view_num
     result['collection_num'] = collection_num
