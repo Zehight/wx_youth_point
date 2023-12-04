@@ -128,6 +128,7 @@ class Comment(db.Model,CRUDMixin):
     comment_main_id = db.Column(db.String(255)) #楼主ID
     reply_id = db.Column(db.String(255)) #回复ID
     content = db.Column(db.String(255))
+    is_look = db.Column(db.String(255),default='0')
     create_by = db.Column(db.String(50), nullable=False)
     create_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now())
 

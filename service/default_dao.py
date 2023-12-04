@@ -53,6 +53,10 @@ class CRUDMixin:
         return result
 
     @classmethod
+    def query(cls):
+        return cls.query
+
+    @classmethod
     def get_all(cls, **kwargs):
         query = cls.query
         result = query.filter_by(**kwargs).all()

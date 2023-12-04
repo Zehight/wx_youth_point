@@ -84,6 +84,8 @@ def getlist_func(**kwargs):
         user = User.get(id=item['create_by'])
         item['create_by_name'] = user.real_name
         item['nike_name'] = user.nike_name
+        file = File.get(id=user.avatar)
+        item['avatar_name'] = file.file_name
 
         # 点赞，收藏，查看
         ActionNumRes = Action.search(article_id=item['id'])
