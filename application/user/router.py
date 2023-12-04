@@ -31,5 +31,5 @@ def binding():
 @token_required
 def update():
     requestData = json.loads(request.data)
-    msg,data = UserFuncs.update(**requestData)
+    msg,data = UserFuncs.update_func(**requestData)
     return MyResponse.make_succ_response(msg=msg,data = data)
