@@ -1,7 +1,7 @@
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import aliased
 
-from service.models import Comment,User,File,db
+from service.models import Comment,User,File,db,Activity
 
 
 # 新增
@@ -83,8 +83,10 @@ def get_list_by_activity(**kwargs):
 
 def get_not_look(**kwargs):
     CommentAlias = aliased(Comment)  # 创建一个别名
-    items = db.session.query(CommentAlias).\
-        join(Comment, CommentAlias.reply_id == Comment.id, isouter=True).\
+    items = db.session.query(CommentAlias,Activity.title,User.nike_name).\
+        join(Comment, CommentAlias.reply_id == Comment.id, isouter=True). \
+        join(Activity, CommentAlias.activity_id == Activity.id). \
+        join(User, CommentAlias.create_by == User.id). \
         filter(Comment.create_by == kwargs['create_by'], CommentAlias.is_look == '0').\
         paginate(kwargs['page'], kwargs['rows'], error_out=False)
     db.session.close()
