@@ -78,3 +78,13 @@ def update_func(**kwargs):
     user = User.get(id=kwargs['id'])
     user.update(**kwargs)
     return "操作成功", "数据修改成功"
+
+
+def getinfo_func(**kwargs):
+    if 'id' not in kwargs:
+        return "操作失败", '参数错误'
+    user = User.get(id=kwargs['id'])
+    if user:
+        return "操作成功", user.to_dict()
+    else:
+        return "操作失败", '数据不存在'

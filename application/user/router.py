@@ -33,3 +33,11 @@ def update():
     requestData = json.loads(request.data)
     msg,data = UserFuncs.update_func(**requestData)
     return MyResponse.make_succ_response(msg=msg,data = data)
+
+
+@user.route('/info', methods=['POST'])
+@token_required
+def info():
+    requestData = json.loads(request.data)
+    msg, data = UserFuncs.getinfo_func(**requestData)
+    return MyResponse.make_succ_response(msg=msg, data=data)
