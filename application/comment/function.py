@@ -87,6 +87,7 @@ def get_not_look(**kwargs):
         join(Comment, CommentAlias.reply_id == Comment.id, isouter=True).\
         filter(Comment.create_by == kwargs['create_by'], CommentAlias.is_look == '0').\
         paginate(kwargs['page'], kwargs['rows'], error_out=False)
+    db.session.close()
     result = [item.to_dict() for item in items.items]
     total = items.total
     return "操作成功", {
