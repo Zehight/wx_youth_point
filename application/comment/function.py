@@ -1,3 +1,4 @@
+from sqlalchemy import and_, not_
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import aliased
 
@@ -83,18 +84,58 @@ def get_list_by_activity(**kwargs):
 
 def get_not_look(**kwargs):
     CommentAlias = aliased(Comment)  # 创建一个别名
-    items = db.session.query(CommentAlias,Activity.title,User.nike_name).\
+    items = db.session.query(CommentAlias,Activity.title,Activity.type,User.nike_name).\
         join(Comment, CommentAlias.reply_id == Comment.id, isouter=True). \
         join(Activity, CommentAlias.activity_id == Activity.id). \
         join(User, CommentAlias.create_by == User.id). \
-        filter(Comment.create_by == kwargs['create_by'], CommentAlias.is_look == '0').\
+        filter(
+        and_(
+            Comment.create_by == kwargs['create_by'],
+            CommentAlias.is_look == '0',
+            not_(CommentAlias.create_by == kwargs['create_by'])
+        )
+    ). \
+        order_by(CommentAlias.create_time.desc()). \
         paginate(kwargs['page'], kwargs['rows'], error_out=False)
     db.session.close()
     result = [
         {
             **item[0].to_dict(),
             'title': item[1],
-            'create_by_nike_name': item[2],
+            'type': item[2],
+            'create_by_nike_name': item[3],
+        }
+        for item in items.items
+    ]
+    total = items.total
+    return "操作成功", {
+            'page': kwargs['page'],
+            'rows': kwargs['rows'],
+            'total': total,
+            'list': result
+        }
+
+def get_my_comment_look(**kwargs):
+    CommentAlias = aliased(Comment)  # 创建一个别名
+    items = db.session.query(CommentAlias,Activity.title,Activity.type,User.nike_name).\
+        join(Comment, CommentAlias.reply_id == Comment.id, isouter=True). \
+        join(Activity, CommentAlias.activity_id == Activity.id). \
+        join(User, CommentAlias.create_by == User.id). \
+        filter(
+        and_(
+            Comment.create_by == kwargs['create_by'],
+            not_(CommentAlias.create_by == kwargs['create_by'])
+        )
+    ). \
+        order_by(CommentAlias.is_look.desc(),CommentAlias.create_time.desc()). \
+        paginate(kwargs['page'], kwargs['rows'], error_out=False)
+    db.session.close()
+    result = [
+        {
+            **item[0].to_dict(),
+            'title': item[1],
+            'type': item[2],
+            'create_by_nike_name': item[3],
         }
         for item in items.items
     ]
