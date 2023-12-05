@@ -1,6 +1,6 @@
 from sqlalchemy.exc import IntegrityError
 
-from service.models import Comment,User,File
+from service.models import Comment,User,File,db
 
 
 # 新增
@@ -79,3 +79,17 @@ def get_list_by_activity(**kwargs):
 
         main_reply['reply'] = follow_reply_list['list']
     return "操作成功", result
+
+def get_not_look(**kwargs):
+    items = db.session.query(Comment).\
+        join(Comment, Comment.id == Comment.reply_id, isouter=True).\
+        filter(Comment.create_by == kwargs['create_by'], Comment.is_look == False).\
+        paginate(kwargs['page'], kwargs['rows'], error_out=False)
+    result = [item.to_dict() for item in items.items]
+    total = items.total
+    return "操作成功", {
+            'page': kwargs['page'],
+            'rows': kwargs['rows'],
+            'total': total,
+            'list': result
+        }

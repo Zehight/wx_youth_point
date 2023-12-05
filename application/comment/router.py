@@ -54,3 +54,12 @@ def list_by_activity():
     requestData = json.loads(request.data)
     msg, data = CommentFuncs.get_list_by_activity(**requestData)
     return MyResponse.make_succ_response(msg=msg, data=data)
+
+
+@comment.route('/list_by_not_look', methods=['POST'])
+@token_required
+def list_by_not_look():
+    requestData = json.loads(request.data)
+    requestData['create_by'] = request.token_info['id']
+    msg, data = CommentFuncs.get_not_look(**requestData)
+    return MyResponse.make_succ_response(msg=msg, data=data)
