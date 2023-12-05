@@ -56,6 +56,7 @@ def getlist_func(**kwargs):
         if reply['reply_id'] is not None:
             comment = Comment.get(id = reply['reply_id'])
             reply['reply_user_name'] = getUser(comment.create_by)['nike_name']
+            reply['reply_user_id'] = comment.create_by
             reply['reply_user_avatar_name'] = getUser(comment.create_by)['avatar_name']
         else:
             reply['reply_user_name'] = ''
