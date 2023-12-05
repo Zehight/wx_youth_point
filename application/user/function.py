@@ -84,7 +84,12 @@ def getinfo_func(**kwargs):
     if 'id' not in kwargs:
         return "操作失败", '参数错误'
     user = User.get(id=kwargs['id'])
+    result = user.to_dict()
+    result['avatar_name'] = ''
+    if user.avatar is not None:
+        file=File.get(id=user.avatar)
+        result['avatar_name'] = file.file_name
     if user:
-        return "操作成功", user.to_dict()
+        return "操作成功", result
     else:
         return "操作失败", '数据不存在'
