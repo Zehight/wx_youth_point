@@ -92,9 +92,9 @@ def get_not_look(**kwargs):
     db.session.close()
     result = [
         {
-            'comment': item[0].to_dict(),
-            'activity_title': item[1],
-            'user_nickname': item[2],
+            **item[0].to_dict(),
+            'title': item[1],
+            'create_by_nike_name': item[2],
         }
         for item in items.items
     ]
