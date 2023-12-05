@@ -91,6 +91,8 @@ def get_not_look(**kwargs):
         join(User, CommentAlias.create_by == User.id). \
         filter(
         and_(
+            CommentAlias.is_delete == '0',
+            Comment.is_delete == '0',
             Comment.create_by == kwargs['create_by'],
             CommentAlias.is_look == '0',
             not_(CommentAlias.create_by == kwargs['create_by'])
@@ -124,6 +126,8 @@ def get_my_comment_look(**kwargs):
         join(User, CommentAlias.create_by == User.id). \
         filter(
         and_(
+            CommentAlias.is_delete == '0',
+            Comment.is_delete == '0',
             Comment.create_by == kwargs['create_by'],
             not_(CommentAlias.create_by == kwargs['create_by'])
         )

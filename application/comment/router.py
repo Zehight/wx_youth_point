@@ -44,6 +44,7 @@ def info():
 @token_required
 def list():
     requestData = json.loads(request.data)
+    requestData['is_delete'] = '0'
     msg, data = CommentFuncs.getlist_func(**requestData)
     return MyResponse.make_succ_response(msg=msg, data=data)
 
@@ -52,6 +53,7 @@ def list():
 @token_required
 def list_by_activity():
     requestData = json.loads(request.data)
+    requestData['is_delete'] = '0'
     msg, data = CommentFuncs.get_list_by_activity(**requestData)
     return MyResponse.make_succ_response(msg=msg, data=data)
 
