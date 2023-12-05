@@ -90,7 +90,14 @@ def get_not_look(**kwargs):
         filter(Comment.create_by == kwargs['create_by'], CommentAlias.is_look == '0').\
         paginate(kwargs['page'], kwargs['rows'], error_out=False)
     db.session.close()
-    result = [item.to_dict() for item in items.items]
+    result = [
+        {
+            'comment': item[0].to_dict(),
+            'activity_title': item[1],
+            'user_nickname': item[2],
+        }
+        for item in items.items
+    ]
     total = items.total
     return "操作成功", {
             'page': kwargs['page'],
