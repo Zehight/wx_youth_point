@@ -2,7 +2,7 @@ from sqlalchemy import and_, not_
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import aliased
 
-from service.models import Comment,User,File,db,Activity
+from service.models import Comment, User, File, db, Activity
 
 
 # 新增
@@ -45,16 +45,17 @@ def getinfo_func(**kwargs):
 def getUser(user_id):
     user = User.get(id=user_id)
     file = File.get(id=user.avatar)
-    return {'nike_name':user.to_dict()['nike_name'],'avatar_name':file.file_name}
+    return {'nike_name': user.to_dict()['nike_name'], 'avatar_name': file.file_name}
+
 
 # 分页查询列表
 def getlist_func(**kwargs):
-    result = Comment.search(order_method='asc',**kwargs)
+    result = Comment.search(**kwargs)
     for reply in result['list']:
         reply['create_by_name'] = getUser(reply['create_by'])['nike_name']
         reply['create_by_avatar_name'] = getUser(reply['create_by'])['avatar_name']
         if reply['reply_id'] is not None:
-            comment = Comment.get(id = reply['reply_id'])
+            comment = Comment.get(id=reply['reply_id'])
             reply['reply_user_name'] = getUser(comment.create_by)['nike_name']
             reply['reply_user_id'] = comment.create_by
             reply['reply_user_avatar_name'] = getUser(comment.create_by)['avatar_name']
@@ -64,12 +65,12 @@ def getlist_func(**kwargs):
 
 
 def get_list_by_activity(**kwargs):
-    result = Comment.search(order_method='asc',**kwargs)
+    result = Comment.search(**kwargs)
     for main_reply in result['list']:
         main_reply['create_by_name'] = getUser(main_reply['create_by'])['nike_name']
         main_reply['create_by_avatar_name'] = getUser(main_reply['create_by'])['avatar_name']
         main_reply['reply_user_name'] = ''
-        follow_reply_list = Comment.search(comment_main_id=main_reply['id'], page=1, rows=3)
+        follow_reply_list = Comment.search(comment_main_id=main_reply['id'], is_delete='1', page=1, rows=3)
         for follow_reply in follow_reply_list['list']:
             follow_reply['create_by_name'] = getUser(follow_reply['create_by'])['nike_name']
             follow_reply['create_by_avatar_name'] = getUser(follow_reply['create_by'])['avatar_name']
@@ -83,9 +84,10 @@ def get_list_by_activity(**kwargs):
         main_reply['reply'] = follow_reply_list['list']
     return "操作成功", result
 
+
 def get_not_look(**kwargs):
     CommentAlias = aliased(Comment)  # 创建一个别名
-    items = db.session.query(CommentAlias,Activity.title,Activity.type,User.nike_name).\
+    items = db.session.query(CommentAlias, Activity.title, Activity.type, User.nike_name). \
         join(Comment, CommentAlias.reply_id == Comment.id, isouter=True). \
         join(Activity, CommentAlias.activity_id == Activity.id). \
         join(User, CommentAlias.create_by == User.id). \
@@ -112,15 +114,16 @@ def get_not_look(**kwargs):
     ]
     total = items.total
     return "操作成功", {
-            'page': kwargs['page'],
-            'rows': kwargs['rows'],
-            'total': total,
-            'list': result
-        }
+        'page': kwargs['page'],
+        'rows': kwargs['rows'],
+        'total': total,
+        'list': result
+    }
+
 
 def get_my_comment_look(**kwargs):
     CommentAlias = aliased(Comment)  # 创建一个别名
-    items = db.session.query(CommentAlias,Activity.title,Activity.type,User.nike_name).\
+    items = db.session.query(CommentAlias, Activity.title, Activity.type, User.nike_name). \
         join(Comment, CommentAlias.reply_id == Comment.id, isouter=True). \
         join(Activity, CommentAlias.activity_id == Activity.id). \
         join(User, CommentAlias.create_by == User.id). \
@@ -132,7 +135,7 @@ def get_my_comment_look(**kwargs):
             not_(CommentAlias.create_by == kwargs['create_by'])
         )
     ). \
-        order_by(CommentAlias.is_look.desc(),CommentAlias.create_time.desc()). \
+        order_by(CommentAlias.is_look.desc(), CommentAlias.create_time.desc()). \
         paginate(kwargs['page'], kwargs['rows'], error_out=False)
     db.session.close()
     result = [
@@ -146,8 +149,8 @@ def get_my_comment_look(**kwargs):
     ]
     total = items.total
     return "操作成功", {
-            'page': kwargs['page'],
-            'rows': kwargs['rows'],
-            'total': total,
-            'list': result
-        }
+        'page': kwargs['page'],
+        'rows': kwargs['rows'],
+        'total': total,
+        'list': result
+    }
