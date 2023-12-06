@@ -70,7 +70,7 @@ def get_list_by_activity(**kwargs):
         main_reply['create_by_name'] = getUser(main_reply['create_by'])['nike_name']
         main_reply['create_by_avatar_name'] = getUser(main_reply['create_by'])['avatar_name']
         main_reply['reply_user_name'] = ''
-        follow_reply_list = Comment.search(comment_main_id=main_reply['id'], is_delete='1', page=1, rows=3)
+        follow_reply_list = Comment.search(comment_main_id=main_reply['id'], is_delete='0', page=1, rows=3)
         for follow_reply in follow_reply_list['list']:
             follow_reply['create_by_name'] = getUser(follow_reply['create_by'])['nike_name']
             follow_reply['create_by_avatar_name'] = getUser(follow_reply['create_by'])['avatar_name']
