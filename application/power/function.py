@@ -18,7 +18,8 @@ def get_access_token():
 def genStreamAnswer(question, id):
     answers[id] = ''
     payload = json.dumps({
-        "messages": question
+        "messages": question,
+        "stream": True
     })
     url = "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/completions_pro?access_token=" + get_access_token()
     response = requests.post(url,payload,stream=True)
