@@ -99,7 +99,7 @@ def getlist_func(**kwargs):
         item['collection_num'] = sum(1 for d in ActionNumList if d.get('type') == '1')
         item['like_num'] = sum(1 for d in ActionNumList if d.get('type') == '2')
 
-        # 我是否点赞，受篡改
+        # 我是否点赞，收藏
         ActionRes = Action.search(article_id=item['id'], create_by=create_by)
         ActionList = ActionRes['list']
         item['collection'] = sum(1 for d in ActionList if d.get('type') == '1')

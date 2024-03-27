@@ -103,7 +103,6 @@ class Question(db.Model,CRUDMixin):
     question_five = db.Column(db.Text())
     create_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now())
 
-
 class Learn(db.Model,CRUDMixin):
     __tablename__ = 'learn'
     id = db.Column(db.String(50), primary_key=True, default=lambda: str(uuid.uuid4()).replace("-", ""))
