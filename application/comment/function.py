@@ -87,19 +87,41 @@ def get_list_by_activity(**kwargs):
 
 def get_not_look(**kwargs):
     CommentAlias = aliased(Comment)  # 创建一个别名
-    UserAlias = aliased(User)  # 创建一个别名
-    items = db.session.query(Comment, Activity.title, Activity.type, User.nike_name). \
+    query1 = db.session.query(Comment, Activity.title, Activity.type, User.nike_name). \
         join(Activity, Comment.activity_id == Activity.id). \
-        join(User, User.id == Activity.create_by). \
+        join(User, User.id == Comment.create_by). \
         filter(and_(
         Activity.create_by == kwargs['create_by'],
         Comment.is_look == '0',
         Comment.is_delete == '0',
         not_(Comment.create_by == kwargs['create_by'])
-    )). \
-        paginate(kwargs['page'], kwargs['rows'], error_out=False)
-    print(items)
+    ))
 
+    query2 = db.session.query(Comment, Activity.title, Activity.type, User.nike_name). \
+        join(Activity, Comment.activity_id == Activity.id). \
+        join(CommentAlias, CommentAlias.id == Comment.comment_main_id). \
+        join(User, and_(
+        User.id == Comment.create_by,
+        not_(User.id == kwargs['create_by'])
+    )). \
+        filter(and_(
+        CommentAlias.create_by == kwargs['create_by'],
+        Comment.is_look == '0',
+        Comment.is_delete == '0',
+    ))
+
+    query3 = db.session.query(Comment, Activity.title, Activity.type, User.nike_name). \
+        join(Activity, Comment.activity_id == Activity.id). \
+        join(CommentAlias, CommentAlias.id == Comment.reply_id). \
+        join(User, User.id == Comment.create_by). \
+        filter(and_(
+        CommentAlias.create_by == kwargs['create_by'],
+        Comment.is_look == '0',
+        Comment.is_delete == '0',
+        not_(Comment.create_by == kwargs['create_by'])
+    ))
+
+    items = query1.union(query2).union(query3).paginate(kwargs['page'], kwargs['rows'], error_out=False)
     # items = db.session.query(CommentAlias, Activity.title, Activity.type, User.nike_name). \
     #     join(Comment, CommentAlias.reply_id == Comment.id, isouter=True). \
     #     join(Activity, CommentAlias.activity_id == Activity.id). \
@@ -139,20 +161,38 @@ def get_not_look(**kwargs):
 
 def get_my_comment_look(**kwargs):
     CommentAlias = aliased(Comment)  # 创建一个别名
-    items = db.session.query(CommentAlias, Activity.title, Activity.type, User.nike_name). \
-        join(Comment, CommentAlias.reply_id == Comment.id, isouter=True). \
-        join(Activity, CommentAlias.activity_id == Activity.id). \
-        join(User, CommentAlias.create_by == User.id). \
-        filter(
-        and_(
-            CommentAlias.is_delete == '0',
-            Comment.is_delete == '0',
-            Comment.create_by == kwargs['create_by'],
-            not_(CommentAlias.create_by == kwargs['create_by'])
-        )
-    ). \
-        order_by(CommentAlias.is_look.desc(), CommentAlias.create_time.desc()). \
-        paginate(kwargs['page'], kwargs['rows'], error_out=False)
+    query1 = db.session.query(Comment, Activity.title, Activity.type, User.nike_name). \
+        join(Activity, Comment.activity_id == Activity.id). \
+        join(User, User.id == Comment.create_by). \
+        filter(and_(
+        Activity.create_by == kwargs['create_by'],
+        Comment.is_delete == '0',
+        not_(Comment.create_by == kwargs['create_by'])
+    ))
+
+    query2 = db.session.query(Comment, Activity.title, Activity.type, User.nike_name). \
+        join(Activity, Comment.activity_id == Activity.id). \
+        join(CommentAlias, CommentAlias.id == Comment.comment_main_id). \
+        join(User, and_(
+        User.id == Comment.create_by,
+        not_(User.id == kwargs['create_by'])
+    )). \
+        filter(and_(
+        CommentAlias.create_by == kwargs['create_by'],
+        Comment.is_delete == '0',
+    ))
+
+    query3 = db.session.query(Comment, Activity.title, Activity.type, User.nike_name). \
+        join(Activity, Comment.activity_id == Activity.id). \
+        join(CommentAlias, CommentAlias.id == Comment.reply_id). \
+        join(User, User.id == Comment.create_by). \
+        filter(and_(
+        CommentAlias.create_by == kwargs['create_by'],
+        Comment.is_delete == '0',
+        not_(Comment.create_by == kwargs['create_by'])
+    ))
+
+    items = query1.union(query2).union(query3).paginate(kwargs['page'], kwargs['rows'], error_out=False)
     db.session.close()
     result = [
         {
