@@ -94,7 +94,7 @@ def getlist_func(**kwargs):
 
         # 评论数量
 
-        item['reply_num'] = Comment.count(activity_id=item['id'])
+        item['reply_num'] = Comment.count(activity_id=item['id'],is_delete='0')
 
         # 点赞，收藏，查看
         ActionNumRes = Action.search(article_id=item['id'])
