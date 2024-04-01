@@ -1,4 +1,4 @@
-from sqlalchemy import and_, not_
+from sqlalchemy import and_, not_, or_
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import aliased
 
@@ -87,21 +87,36 @@ def get_list_by_activity(**kwargs):
 
 def get_not_look(**kwargs):
     CommentAlias = aliased(Comment)  # 创建一个别名
-    items = db.session.query(CommentAlias, Activity.title, Activity.type, User.nike_name). \
-        join(Comment, CommentAlias.reply_id == Comment.id, isouter=True). \
-        join(Activity, CommentAlias.activity_id == Activity.id). \
-        join(User, CommentAlias.create_by == User.id). \
-        filter(
-        and_(
-            CommentAlias.is_delete == '0',
-            Comment.is_delete == '0',
-            Comment.create_by == kwargs['create_by'],
-            CommentAlias.is_look == '0',
-            not_(CommentAlias.create_by == kwargs['create_by'])
-        )
-    ). \
-        order_by(CommentAlias.create_time.desc()). \
+    UserAlias = aliased(User)  # 创建一个别名
+    items = db.session.query(Comment, Activity.title, Activity.type, User.nike_name). \
+        join(Activity, Comment.activity_id == Activity.id). \
+        join(User, User.id == Activity.create_by). \
+        filter(and_(
+        Activity.create_by == kwargs['create_by'],
+        Comment.is_look == '0',
+        Comment.is_delete == '0',
+        not_(Comment.create_by == kwargs['create_by'])
+    )). \
         paginate(kwargs['page'], kwargs['rows'], error_out=False)
+    print(items)
+
+    # items = db.session.query(CommentAlias, Activity.title, Activity.type, User.nike_name). \
+    #     join(Comment, CommentAlias.reply_id == Comment.id, isouter=True). \
+    #     join(Activity, CommentAlias.activity_id == Activity.id). \
+    #     join(User, CommentAlias.create_by == User.id). \
+    #     join(UserAlias,Activity.create_by == User.id).\
+    #     filter(
+    #     and_(
+    #         CommentAlias.is_delete == '0',
+    #         Comment.is_delete == '0',
+    #         Comment.create_by == kwargs['create_by'],
+    #         CommentAlias.is_look == '0',
+    #         UserAlias.id == kwargs['create_by'],
+    #         not_(CommentAlias.create_by == kwargs['create_by'])
+    #     )
+    # ). \
+    #     order_by(CommentAlias.create_time.desc()). \
+    #     paginate(kwargs['page'], kwargs['rows'], error_out=False)
 
     db.session.close()
     result = [
@@ -155,4 +170,3 @@ def get_my_comment_look(**kwargs):
         'total': total,
         'list': result
     }
-
