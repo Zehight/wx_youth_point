@@ -161,31 +161,33 @@ def get_not_look(**kwargs):
 
 def get_my_comment_look(**kwargs):
     CommentAlias = aliased(Comment)  # 创建一个别名
-    query1 = db.session.query(Comment, Activity.title, Activity.type, User.nike_name). \
+    query1 = db.session.query(Comment, Activity.title, Activity.type, User.nike_name,File.file_name). \
         join(Activity, Comment.activity_id == Activity.id). \
         join(User, User.id == Comment.create_by). \
+        join(File, File.id == User.avatar). \
         filter(and_(
         Activity.create_by == kwargs['create_by'],
         Comment.is_delete == '0',
         not_(Comment.create_by == kwargs['create_by'])
     ))
 
-    query2 = db.session.query(Comment, Activity.title, Activity.type, User.nike_name). \
+    query2 = db.session.query(Comment, Activity.title, Activity.type, User.nike_name,File.file_name). \
         join(Activity, Comment.activity_id == Activity.id). \
         join(CommentAlias, CommentAlias.id == Comment.comment_main_id). \
         join(User, and_(
         User.id == Comment.create_by,
         not_(User.id == kwargs['create_by'])
-    )). \
+    )).join(File, File.id == User.avatar). \
         filter(and_(
         CommentAlias.create_by == kwargs['create_by'],
         Comment.is_delete == '0',
     ))
-
-    query3 = db.session.query(Comment, Activity.title, Activity.type, User.nike_name). \
+    #
+    query3 = db.session.query(Comment, Activity.title, Activity.type, User.nike_name,File.file_name). \
         join(Activity, Comment.activity_id == Activity.id). \
         join(CommentAlias, CommentAlias.id == Comment.reply_id). \
         join(User, User.id == Comment.create_by). \
+        join(File, File.id == User.avatar). \
         filter(and_(
         CommentAlias.create_by == kwargs['create_by'],
         Comment.is_delete == '0',
@@ -200,6 +202,7 @@ def get_my_comment_look(**kwargs):
             'title': item[1],
             'type': item[2],
             'create_by_nike_name': item[3],
+            'create_by_avatar': item[4],
         }
         for item in items.items
     ]
