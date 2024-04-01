@@ -67,7 +67,7 @@ def getlist_func(**kwargs):
     return "操作成功", result
 
 def like_me_func(**kwargs):
-    items = (db.session.query(Action,Activity.title,User.nike_name,File.file_name,Activity.type)
+    items = (db.session.query(Action,Activity.title,User.nike_name,File.file_name,Activity.type,Activity.id)
              .join(Activity,Action.article_id ==Activity.id)
              .join(User,Action.create_by ==User.id)
              .join(File,User.avatar ==File.id)
@@ -83,6 +83,7 @@ def like_me_func(**kwargs):
             'create_name': item[2],
             'avatar_name': item[3],
             'activity_type':item[4],
+            'activity_id':item[5],
         }
         for item in items.items
     ]
