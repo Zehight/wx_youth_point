@@ -1,6 +1,6 @@
 from sqlalchemy import and_
 
-from service.models import Action, Activity,db,User
+from service.models import Action, Activity,db,User,File
 
 
 # 新增
@@ -67,9 +67,10 @@ def getlist_func(**kwargs):
     return "操作成功", result
 
 def like_me_func(**kwargs):
-    items = (db.session.query(Action,Activity.title,User.nike_name)
+    items = (db.session.query(Action,Activity.title,User.nike_name,File.file_name)
              .join(Activity,Action.article_id ==Activity.id)
              .join(User,Action.create_by ==User.id)
+             .join(File,User.avatar ==File.id)
              .filter(and_(
         Activity.create_by==kwargs['create_by'],Action.type==kwargs['type'])). \
         order_by(Action.create_time.desc()). \
@@ -80,6 +81,7 @@ def like_me_func(**kwargs):
             **item[0].to_dict(),
             'title': item[1],
             'create_name': item[2],
+            'avatar_name': item[3],
         }
         for item in items.items
     ]
