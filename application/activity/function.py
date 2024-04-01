@@ -2,7 +2,7 @@ import time
 
 from sqlalchemy.exc import IntegrityError
 
-from service.models import Activity, ActivityFileRela, Dept, File, User, Action
+from service.models import Activity, ActivityFileRela, Dept, File, User, Action,Comment
 
 
 # 新增
@@ -91,6 +91,10 @@ def getlist_func(**kwargs):
         item['nike_name'] = user.nike_name
         file = File.get(id=user.avatar)
         item['avatar_name'] = file.file_name
+
+        # 评论数量
+
+        item['reply_num'] = Comment.count(activity_id=item['id'])
 
         # 点赞，收藏，查看
         ActionNumRes = Action.search(article_id=item['id'])
