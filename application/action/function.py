@@ -1,4 +1,6 @@
-from service.models import Action, Activity
+from sqlalchemy import and_
+
+from service.models import Action, Activity,db,User
 
 
 # 新增
@@ -64,3 +66,25 @@ def getlist_func(**kwargs):
             result['list'][result['list'].index(item)] = {}
     return "操作成功", result
 
+def like_me_func(**kwargs):
+    items = (db.session.query(Action,Activity.title,User.nike_name)
+             .join(Activity,Action.article_id ==Activity.id)
+             .join(User,Action.create_by ==User.id)
+             .filter(and_(
+        Activity.create_by==kwargs['create_by'],Action.type==kwargs['type'])). \
+        order_by(Action.create_time.desc()). \
+        paginate(kwargs['page'], kwargs['rows'], error_out=False))
+    db.session.close()
+    result = [
+        {
+            **item[0].to_dict(),
+            'title': item[1],
+            'create_name': item[2],
+        }
+        for item in items.items
+    ]
+    total = items.total
+    return "操作成功", {
+        'total': total,
+        'list': result
+    }

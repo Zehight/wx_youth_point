@@ -48,3 +48,12 @@ def list():
     msg, data = ActionFuncs.getlist_func(**requestData)
     print(msg,data)
     return MyResponse.make_succ_response(msg=msg, data=data)
+
+@action.route('/message', methods=['POST'])
+@token_required
+def like_me():
+    requestData = json.loads(request.data)
+    requestData['create_by'] = request.token_info['id']
+    msg, data = ActionFuncs.like_me_func(**requestData)
+    print(msg,data)
+    return MyResponse.make_succ_response(msg=msg, data=data)

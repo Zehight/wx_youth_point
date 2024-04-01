@@ -102,6 +102,7 @@ def get_not_look(**kwargs):
     ). \
         order_by(CommentAlias.create_time.desc()). \
         paginate(kwargs['page'], kwargs['rows'], error_out=False)
+
     db.session.close()
     result = [
         {
@@ -154,3 +155,4 @@ def get_my_comment_look(**kwargs):
         'total': total,
         'list': result
     }
+

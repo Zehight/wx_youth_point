@@ -17,8 +17,8 @@ app.register_blueprint(GATEWAY)
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://{}:{}@{}/{}'.format(config.username, config.password,
-                                                                     config.db_address, config.data_base)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://{}:{}@{}/youth_point'.format(config.username, config.password,
+                                                                     config.db_address)
 
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_pre_ping': True}
 
