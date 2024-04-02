@@ -1,4 +1,4 @@
-from sqlalchemy import and_, not_, or_
+from sqlalchemy import and_, not_, or_, asc, desc
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import aliased
 
@@ -194,7 +194,7 @@ def get_my_comment_look(**kwargs):
         not_(Comment.create_by == kwargs['create_by'])
     ))
 
-    items = query1.union(query2).union(query3).paginate(kwargs['page'], kwargs['rows'], error_out=False)
+    items = query1.union(query2).union(query3).order_by(asc(Comment.is_look), desc(Comment.create_time)).paginate(kwargs['page'], kwargs['rows'], error_out=False)
     db.session.close()
     result = [
         {
