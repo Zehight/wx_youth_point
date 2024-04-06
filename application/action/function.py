@@ -1,12 +1,25 @@
 from sqlalchemy import and_
 
-from service.models import Action, Activity,db,User,File
+from service.models import Action, Activity,db,User,File,Message
 
 
 # 新增
 def create_func(**kwargs):
     action = Action.create(**kwargs)
     action_id = action['id']
+
+    if(kwargs['type']!='0'):
+        message = {}
+
+        user = db.session.query(Action.id,Activity.create_by).join(Activity,Action.article_id ==Activity.id). \
+            filter(Action.id == action_id)
+
+        message['comment_id'] = kwargs['article_id']
+        message['look_user'] = user[1]
+        message['is_look'] = '0'
+        message['type'] = kwargs['type']
+        message['create_by'] = kwargs['create_by']
+        Message.create(**message)
     return "操作成功", action_id
 
 

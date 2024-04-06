@@ -2,13 +2,59 @@ from sqlalchemy import and_, not_, or_, asc, desc
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import aliased
 
-from service.models import Comment, User, File, db, Activity
+from service.models import Comment, User, File, db, Activity, Message
 
 
 # 新增
 def create_func(**kwargs):
     comment = Comment.create(**kwargs)
     comment_id = comment['id']
+    CommentAlias = aliased(Comment)  # 创建一个别名
+
+    if(kwargs['activity_id'] != 'remark'):
+        message1 = {}
+        user1 = db.session.query(Comment.id, Activity.create_by).join(Activity, Comment.activity_id == Activity.id). \
+            filter(and_(Comment.id == comment_id, not_(Activity.create_by == kwargs['create_by']))).first()
+        if user1:
+            message1['comment_id'] = user1[0]
+            message1['look_user'] = user1[1]
+            message1['activity_id'] = kwargs['activity_id']
+            message1['type'] = '0'
+            message1['is_look'] = '0'
+            message1['create_by'] = kwargs['create_by']
+            Message.create(**message1)
+
+    if (kwargs['activity_id'] != kwargs['comment_main_id']) and (kwargs['comment_main_id']!='remark'):
+        message2 = {}
+        user2 = db.session.query(Comment.id, CommentAlias.create_by).join(CommentAlias,
+                                                                          Comment.comment_main_id == CommentAlias.id). \
+            filter(
+            and_(CommentAlias.id == kwargs['comment_main_id'], not_(CommentAlias.create_by == kwargs['create_by']))).first()
+        if user2:
+            message2['comment_id'] = user2[0]
+            message2['look_user'] = user2[1]
+            message2['is_look'] = '0'
+            message2['type'] = '0'
+            message2['activity_id'] = kwargs['activity_id']
+            message2['create_by'] = kwargs['create_by']
+            Message.create(**message2)
+
+    if 'reply_id' in kwargs.keys() :
+        if(kwargs['reply_id'] != kwargs['comment_main_id']):
+            message3 = {}
+            user3 = db.session.query(Comment.id, CommentAlias.create_by).join(CommentAlias,
+                                                                              Comment.reply_id == CommentAlias.id). \
+                filter(
+                and_(CommentAlias.id == kwargs['reply_id'], not_(CommentAlias.create_by == kwargs['create_by']))).first()
+            if user3:
+                message3['comment_id'] = user3[0]
+                message3['look_user'] = user3[1]
+                message3['is_look'] = '0'
+                message3['type'] = '0'
+                message3['activity_id'] = kwargs['activity_id']
+                message3['create_by'] = kwargs['create_by']
+                Message.create(**message3)
+
     return "操作成功", comment_id
 
 
@@ -161,7 +207,7 @@ def get_not_look(**kwargs):
 
 def get_my_comment_look(**kwargs):
     CommentAlias = aliased(Comment)  # 创建一个别名
-    query1 = db.session.query(Comment, Activity.title, Activity.type, User.nike_name,File.file_name). \
+    query1 = db.session.query(Comment, Activity.title, Activity.type, User.nike_name, File.file_name). \
         join(Activity, Comment.activity_id == Activity.id). \
         join(User, User.id == Comment.create_by). \
         join(File, File.id == User.avatar). \
@@ -171,7 +217,7 @@ def get_my_comment_look(**kwargs):
         not_(Comment.create_by == kwargs['create_by'])
     ))
 
-    query2 = db.session.query(Comment, Activity.title, Activity.type, User.nike_name,File.file_name). \
+    query2 = db.session.query(Comment, Activity.title, Activity.type, User.nike_name, File.file_name). \
         join(Activity, Comment.activity_id == Activity.id). \
         join(CommentAlias, CommentAlias.id == Comment.comment_main_id). \
         join(User, and_(
@@ -183,7 +229,7 @@ def get_my_comment_look(**kwargs):
         Comment.is_delete == '0',
     ))
     #
-    query3 = db.session.query(Comment, Activity.title, Activity.type, User.nike_name,File.file_name). \
+    query3 = db.session.query(Comment, Activity.title, Activity.type, User.nike_name, File.file_name). \
         join(Activity, Comment.activity_id == Activity.id). \
         join(CommentAlias, CommentAlias.id == Comment.reply_id). \
         join(User, User.id == Comment.create_by). \
@@ -194,7 +240,8 @@ def get_my_comment_look(**kwargs):
         not_(Comment.create_by == kwargs['create_by'])
     ))
 
-    items = query1.union(query2).union(query3).order_by(asc(Comment.is_look), desc(Comment.create_time)).paginate(kwargs['page'], kwargs['rows'], error_out=False)
+    items = query1.union(query2).union(query3).order_by(asc(Comment.is_look), desc(Comment.create_time)).paginate(
+        kwargs['page'], kwargs['rows'], error_out=False)
     db.session.close()
     result = [
         {

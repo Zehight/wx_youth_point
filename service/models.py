@@ -134,4 +134,15 @@ class Comment(db.Model,CRUDMixin):
     create_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now())
 
 
+class Message(db.Model,CRUDMixin):
+    __tablename__ = 'message'
+    id = db.Column(db.String(50), primary_key=True, default=lambda: str(uuid.uuid4()).replace("-", ""))
+    comment_id = db.Column(db.String(255),nullable=True) #回复ID
+    activity_id = db.Column(db.String(255), nullable=True)  # 帖子ID
+    type = db.Column(db.String(1),  default='0')# 评论为0，收藏为1，点赞为2
+    look_user = db.Column(db.String(255))
+    is_look = db.Column(db.String(255),default='0')
+    create_by = db.Column(db.String(50), nullable=False)
+    create_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now())
+
 db.create_all()
