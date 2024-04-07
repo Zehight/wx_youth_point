@@ -51,6 +51,7 @@ def count():
 @message.route('/list', methods=['POST'])
 def list():
     requestData = json.loads(request.data)
+    requestData['look_user'] = request.token_info['id']
     msg, data = MessageFuncs.getlist_func(**requestData)
     print(msg,data)
     return MyResponse.make_succ_response(msg=msg, data=data)
