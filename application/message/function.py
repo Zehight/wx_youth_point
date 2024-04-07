@@ -45,7 +45,7 @@ def get_count_func(**kwargs):
     query = db.session.query(
         Message.type,
         func.count(Message.type)
-    ).filter(Message.look_user == kwargs['look_user']).group_by(Message.type).all()
+    ).filter(and_(Message.look_user == kwargs['look_user'],Message.is_look == '0')).group_by(Message.type).all()
     db.session.close()
     result = {}
     for item in query:
