@@ -59,7 +59,7 @@ def get_count_func(**kwargs):
 def getlist_func(**kwargs):
     print(kwargs)
     if(kwargs['type'] == '0'):
-        query = db.session.query(Message, Activity.title,Comment.content, User.nike_name, File.file_name). \
+        query = db.session.query(Message, Activity.title,Activity.type,Comment.content, User.nike_name, File.file_name). \
             join(Activity, Message.activity_id == Activity.id). \
             join(Comment,Message.comment_id == Comment.id). \
             join(User, Message.create_by == User.id).join(File, User.avatar == File.id). \
@@ -70,14 +70,15 @@ def getlist_func(**kwargs):
             {
                 **item[0].to_dict(),
                 'title': item[1],
-                'comment': item[2],
-                'create_by_nike_name': item[2],
-                'create_by_avatar': item[3],
+                'activity_type': item[2],
+                'comment': item[3],
+                'create_by_nike_name': item[4],
+                'create_by_avatar': item[5],
             }
             for item in items.items
         ]
     else:
-        query = db.session.query(Message,Activity.title,User.nike_name,File.file_name). \
+        query = db.session.query(Message,Activity.title,Activity.type,User.nike_name,File.file_name). \
             join(Activity,Message.activity_id == Activity.id). \
             join(User,Message.create_by == User.id).join(File,User.avatar == File.id). \
             filter(and_(Message.look_user == kwargs['look_user'] , Message.type == kwargs['type']))
@@ -87,8 +88,10 @@ def getlist_func(**kwargs):
             {
                 **item[0].to_dict(),
                 'title': item[1],
-                'create_by_nike_name': item[2],
-                'create_by_avatar': item[3],
+                'activity_type': item[2],
+                'comment': '',
+                'create_by_nike_name': item[3],
+                'create_by_avatar': item[4],
             }
             for item in items.items
         ]
