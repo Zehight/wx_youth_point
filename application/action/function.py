@@ -1,25 +1,25 @@
 from sqlalchemy import and_
 
-from service.models import Action, Activity,db,User,File,Message
+from service.models import Action, Activity, db, User, File, Message
 
 
 # 新增
 def create_func(**kwargs):
     action = Action.create(**kwargs)
     action_id = action['id']
-
-    if(kwargs['type']!='0'):
+    if (kwargs['type'] != '0'):
         message = {}
-
-        user = db.session.query(Action.id,Activity.create_by).join(Activity,Action.article_id ==Activity.id). \
-            filter(Action.id == action_id)
-
-        message['comment_id'] = kwargs['article_id']
-        message['look_user'] = user[1]
-        message['is_look'] = '0'
-        message['type'] = kwargs['type']
-        message['create_by'] = kwargs['create_by']
-        Message.create(**message)
+        user = db.session.query(Action.id, Activity.create_by).join(Activity, Action.article_id == Activity.id). \
+            filter(Action.id == action_id).first()
+        if user:
+            message['comment_id'] = kwargs['article_id']
+            message['activity_id'] = kwargs['article_id']
+            message['look_user'] = user[1]
+            message['is_look'] = '0'
+            message['type'] = kwargs['type']
+            message['create_by'] = kwargs['create_by']
+            Message.create(**message)
+        db.session.close()
     return "操作成功", action_id
 
 
@@ -68,7 +68,7 @@ def getlist_func(**kwargs):
     result['list'] = get_latest_records(result['list'])
     for item in result['list']:
         articleInfo = Activity.get(id=item['article_id'])
-        if(articleInfo):
+        if (articleInfo):
             articleInfoDict = articleInfo.to_dict()
             articleInfoDict['action_id'] = item['id']
             articleInfoDict['action_type'] = item['type']
@@ -79,15 +79,16 @@ def getlist_func(**kwargs):
             result['list'][result['list'].index(item)] = {}
     return "操作成功", result
 
+
 def like_me_func(**kwargs):
-    items = (db.session.query(Action,Activity.title,User.nike_name,File.file_name,Activity.type,Activity.id)
-             .join(Activity,Action.article_id ==Activity.id)
-             .join(User,Action.create_by ==User.id)
-             .join(File,User.avatar ==File.id)
+    items = (db.session.query(Action, Activity.title, User.nike_name, File.file_name, Activity.type, Activity.id)
+             .join(Activity, Action.article_id == Activity.id)
+             .join(User, Action.create_by == User.id)
+             .join(File, User.avatar == File.id)
              .filter(and_(
-        Activity.create_by==kwargs['create_by'],Action.type==kwargs['type'])). \
-        order_by(Action.create_time.desc()). \
-        paginate(kwargs['page'], kwargs['rows'], error_out=False))
+        Activity.create_by == kwargs['create_by'], Action.type == kwargs['type'])). \
+             order_by(Action.create_time.desc()). \
+             paginate(kwargs['page'], kwargs['rows'], error_out=False))
     db.session.close()
     result = [
         {
@@ -95,8 +96,8 @@ def like_me_func(**kwargs):
             'title': item[1],
             'create_name': item[2],
             'avatar_name': item[3],
-            'activity_type':item[4],
-            'activity_id':item[5],
+            'activity_type': item[4],
+            'activity_id': item[5],
         }
         for item in items.items
     ]
