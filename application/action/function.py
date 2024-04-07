@@ -1,4 +1,4 @@
-from sqlalchemy import and_
+from sqlalchemy import and_, not_
 
 from service.models import Action, Activity, db, User, File, Message
 
@@ -10,7 +10,7 @@ def create_func(**kwargs):
     if (kwargs['type'] != '0'):
         message = {}
         user = db.session.query(Action.id, Activity.create_by).join(Activity, Action.article_id == Activity.id). \
-            filter(Action.id == action_id).first()
+            filter(and_(Action.id == action_id,not_(Action.create_by == Activity.create_by))).first()
         if user:
             message['comment_id'] = kwargs['article_id']
             message['activity_id'] = kwargs['article_id']

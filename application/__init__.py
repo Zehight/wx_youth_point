@@ -18,6 +18,7 @@ from application.question import question
 from application.learn import learn
 from application.action import action
 from application.comment import comment
+from application.message import message
 
 
 GATEWAY.register_blueprint(file)
@@ -33,3 +34,4 @@ GATEWAY.register_blueprint(question)
 GATEWAY.register_blueprint(learn)
 GATEWAY.register_blueprint(action)
 GATEWAY.register_blueprint(comment)
+GATEWAY.register_blueprint(message)
