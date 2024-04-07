@@ -125,7 +125,8 @@ def getLearn_func():
     result2 = Activity.search(type="学习", block="业务知识", page=1, rows=5)
     result3 = Activity.search(type="学习", block="团务百科", page=1, rows=5)
     result4 = Activity.search(type="学习", block="主题活动", page=1, rows=5)
-    result = result1['list'] + result2['list'] + result3['list'] + result4['list']
+    result5 = Activity.search(type="学习", block="岗位支持", page=1, rows=5)
+    result = result1['list'] + result2['list'] + result3['list'] + result4['list']+result5['list']
     time2 = time.time()
     for item in result:
         item['view_num'] = Action.count(article_id=item['id'])
