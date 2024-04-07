@@ -47,15 +47,11 @@ def get_count_func(**kwargs):
         func.count(Message.type)
     ).filter(Message.look_user == kwargs['look_user']).group_by(Message.type).all()
     db.session.close()
-    result = [
-        {
-            item[0]:item[1],
-        }
-        for item in query
-    ]
-    return "操作成功", {
-        'list': result
-    }
+    result = {}
+    for item in query:
+        result[item[0]] = item[1]
+    return "操作成功", result
+
 
 
 
