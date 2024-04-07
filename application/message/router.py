@@ -49,6 +49,7 @@ def count():
 
 
 @message.route('/list', methods=['POST'])
+@token_required
 def list():
     requestData = json.loads(request.data)
     requestData['look_user'] = request.token_info['id']
