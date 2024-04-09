@@ -118,6 +118,42 @@ def getlist_func(**kwargs):
         item['list'] = file_list['list']
     return "操作成功", result
 
+def get_my_list_func(**kwargs):
+    create_by = kwargs['create_by']
+    result = Activity.search(**kwargs)
+    for item in result['list']:
+        dept = Dept.get(id=item['dept_id'])
+        user = User.get(id=item['create_by'])
+        item['create_by_name'] = user.real_name
+        item['nike_name'] = user.nike_name
+        file = File.get(id=user.avatar)
+        item['avatar_name'] = file.file_name
+
+        # 评论数量
+
+        item['reply_num'] = Comment.count(activity_id=item['id'],is_delete='0')
+
+        # 点赞，收藏，查看
+        ActionNumRes = Action.search(article_id=item['id'])
+        ActionNumList = ActionNumRes['list']
+        item['view_num'] = sum(1 for d in ActionNumList if d.get('type') == '0')
+        item['collection_num'] = sum(1 for d in ActionNumList if d.get('type') == '1')
+        item['like_num'] = sum(1 for d in ActionNumList if d.get('type') == '2')
+
+        # 我是否点赞，收藏
+        ActionRes = Action.search(article_id=item['id'], create_by=create_by)
+        ActionList = ActionRes['list']
+        item['collection'] = sum(1 for d in ActionList if d.get('type') == '1')
+        item['like'] = sum(1 for d in ActionList if d.get('type') == '2')
+
+        file_list = ActivityFileRela.search(activity_id=item['id'], rows=3, page=1)
+        if file_list['total'] > 0:
+            for fileItem in file_list['list']:
+                file = File.get(id=str(fileItem['file_id']))
+                fileItem['file_name'] = file.file_name
+        item['dept_name'] = dept.name
+        item['list'] = file_list['list']
+    return "操作成功", result
 
 def getLearn_func():
     time1 = time.time()
