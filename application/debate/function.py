@@ -65,7 +65,7 @@ ORDER BY
         for item in data:
             list.append({"type":item[0],"content":item[1],"vote_num":item[2]})
 
-
+    db.session.close()
     return "操作成功", {"team": team, "person": person,"vote":list}
     # debate = Debate.get(id=kwargs['id'])
     # if debate:
