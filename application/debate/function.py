@@ -37,6 +37,7 @@ def getinfo_func(**kwargs):
 
     team = ''
     person = ''
+    vote_list = []
 
     # 子查询
     query1 = db.session.query(Debate).filter(Debate.ip == kwargs['ip'],Debate.type == '1').order_by(Debate.create_time.desc()).first()
@@ -60,13 +61,13 @@ ORDER BY
 	vote_count DESC;'''
         result = db.session.execute(text(sql))
         data = result.fetchall()
-        print(data)
-        list = []
-        for item in data:
-            list.append({"type":item[0],"content":item[1],"vote_num":item[2]})
+        vote_list = []
+        if data is not None:
+            for item in data:
+                vote_list.append({"type":item[0],"content":item[1],"vote_num":item[2]})
 
     db.session.close()
-    return "操作成功", {"team": team, "person": person,"vote":list}
+    return "操作成功", {"team": team, "person": person,"vote":vote_list}
     # debate = Debate.get(id=kwargs['id'])
     # if debate:
     #     return "操作成功",debate.to_dict()
