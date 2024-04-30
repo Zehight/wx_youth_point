@@ -38,7 +38,7 @@ def session_clear(exception=None):
 
 @app.route('/' + config.API_GATEWAY + '/health/check', methods=['GET'])
 def check():
-    x_forwarded_for = request.headers.get('X-Forwarded-For')
+    x_forwarded_for = request.headers.get('X-ORIGINAL-FORWARDED-FOR')
     header = str(request.headers.__dict__)
     return {'ip': x_forwarded_for, 'header': header, 'check': 'e22qeq2'}
 

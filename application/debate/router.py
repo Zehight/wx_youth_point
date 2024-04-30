@@ -9,7 +9,7 @@ from service.login import token_required
 
 @debate.route('/add', methods=['POST'])
 def add():
-    x_forwarded_for = request.headers.get('X-Forwarded-For')
+    x_forwarded_for = request.headers.get('X-ORIGINAL-FORWARDED-FOR')
     # x_forwarded_for = '192.168.2.2'
     requestData = json.loads(request.data)
     requestData['ip'] = x_forwarded_for
@@ -33,7 +33,7 @@ def delete():
 
 @debate.route('/info', methods=['POST'])
 def info():
-    x_forwarded_for = request.headers.get('X-Forwarded-For')
+    x_forwarded_for = request.headers.get('X-ORIGINAL-FORWARDED-FOR')
     # x_forwarded_for = '192.168.1.1'
     requestData={}
     requestData['ip'] = x_forwarded_for
