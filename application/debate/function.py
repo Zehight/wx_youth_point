@@ -5,9 +5,8 @@ from service.models import Debate, db
 
 # 新增
 def create_func(**kwargs):
-    debate = Debate.createByAuto(**kwargs)
-    debate_data = debate['data']
-    return "操作成功", debate_data
+    Debate.createByAuto(**kwargs)
+    return "操作成功", 'ok'
 
 
 # 删除
