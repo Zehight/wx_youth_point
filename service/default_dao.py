@@ -28,6 +28,12 @@ class CRUDMixin:
         instance.save()
         return {'id':kwargs['id']}
 
+    @classmethod
+    def createByAuto(cls, **kwargs):
+        instance = cls(**kwargs)
+        instance.save()
+        return {'id':kwargs['id']}
+
     def update(self, commit=True, **kwargs):
         for attr, value in kwargs.items():
             setattr(self, attr, value)
