@@ -40,8 +40,10 @@ def getinfo_func(**kwargs):
     vote_list = []
 
     # 子查询
-    query1 = db.session.query(Debate).filter(Debate.ip == kwargs['ip'],Debate.type == '1').order_by(Debate.create_time.desc()).first()
-    query2 = db.session.query(Debate).filter(Debate.ip == kwargs['ip'],Debate.type == '2').order_by(Debate.create_time.desc()).first()
+    query1 = db.session.query(Debate).filter(Debate.ip == kwargs['ip'], Debate.type == '1').order_by(
+        Debate.create_time.desc()).first()
+    query2 = db.session.query(Debate).filter(Debate.ip == kwargs['ip'], Debate.type == '2').order_by(
+        Debate.create_time.desc()).first()
     if query1 is not None:
         team = query1.to_dict()['content']
 
@@ -54,7 +56,7 @@ def getinfo_func(**kwargs):
 FROM
 	debate 
 WHERE
-	( ip, type, create_time ) IN ( SELECT ip, type, MAX( create_time ) FROM debate GROUP BY ip, type ) 
+	( ip, type, id ) IN ( SELECT ip, type, MAX( id ) FROM debate GROUP BY ip, type ) 
 GROUP BY
 	content 
 ORDER BY
@@ -64,10 +66,10 @@ ORDER BY
         vote_list = []
         if data is not None:
             for item in data:
-                vote_list.append({"type":item[0],"content":item[1],"vote_num":item[2]})
+                vote_list.append({"type": item[0], "content": item[1], "vote_num": item[2]})
 
     db.session.close()
-    return "操作成功", {"team": team, "person": person,"vote":vote_list}
+    return "操作成功", {"team": team, "person": person, "vote": vote_list}
     # debate = Debate.get(id=kwargs['id'])
     # if debate:
     #     return "操作成功",debate.to_dict()

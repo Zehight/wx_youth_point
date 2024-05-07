@@ -158,11 +158,11 @@ class Message(db.Model, CRUDMixin):
 
 class Debate(db.Model, CRUDMixin):
     __tablename__ = 'debate'
-    id = db.Column(db.String(50), primary_key=True, default=lambda: str(uuid.uuid4()).replace("-", ""))
+    id = db.Column(db.Integer(), primary_key=True,autoincrement=True)
     ip = db.Column(db.String(255))
     type = db.Column(db.String(1), default='0')  # 投队伍为1，偷最佳辩手为2
     content = db.Column(db.String(255))  # 具体投票内容
-    create_time = db.Column(db.TIMESTAMP, nullable=False, default=lambda: datetime.now().timestamp())
+    create_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now())
 
 
 db.create_all()
