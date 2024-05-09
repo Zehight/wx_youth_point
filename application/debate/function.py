@@ -32,6 +32,7 @@ def update_func(**kwargs):
 def getinfo_func(**kwargs):
     if 'ip' not in kwargs:
         return "操作失败", '参数错误'
+
     # 获取某个IP最新一次投票的队伍名字和辩手名字
 
     team = ''
@@ -49,15 +50,16 @@ def getinfo_func(**kwargs):
     if query2 is not None:
         person = query2.to_dict()['content']
 
-        sql = '''SELECT type,
+        sql = f'''SELECT type,
 	content,
-	COUNT(*) AS vote_count 
+	COUNT(*) AS vote_count ,title
 FROM
 	debate 
 WHERE
-	( ip, type, id ) IN ( SELECT ip, type, MAX( id ) FROM debate GROUP BY ip, type ) 
+	( ip, type, id,title ) IN ( SELECT ip, type, MAX( id ),title FROM debate GROUP BY ip, type,title )
+	AND title = '{kwargs['title']}'
 GROUP BY
-	content 
+	content ,title
 ORDER BY
 	vote_count DESC;'''
         result = db.session.execute(text(sql))

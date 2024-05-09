@@ -1,5 +1,6 @@
 import uuid
 
+
 from sqlalchemy.exc import SQLAlchemyError
 
 from run import db
@@ -93,6 +94,11 @@ class CRUDMixin:
                 db.session.rollback()
                 raise
         return self
+
+
+
+
+
 
     @classmethod
     def search(cls, keyword = '',page=None, rows=None,order_method='desc',**kwargs):
