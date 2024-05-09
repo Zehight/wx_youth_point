@@ -40,9 +40,9 @@ def getinfo_func(**kwargs):
     vote_list = []
 
     # 子查询
-    query1 = db.session.query(Debate).filter(Debate.ip == kwargs['ip'], Debate.type == '1').order_by(
+    query1 = db.session.query(Debate).filter(Debate.ip == kwargs['ip'], Debate.type == '1',Debate.title==kwargs['title']).order_by(
         Debate.create_time.desc()).first()
-    query2 = db.session.query(Debate).filter(Debate.ip == kwargs['ip'], Debate.type == '2').order_by(
+    query2 = db.session.query(Debate).filter(Debate.ip == kwargs['ip'], Debate.type == '2',Debate.title==kwargs['title']).order_by(
         Debate.create_time.desc()).first()
     if query1 is not None:
         team = query1.to_dict()['content']
