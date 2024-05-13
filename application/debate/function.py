@@ -52,7 +52,7 @@ def getinfo_func(**kwargs):
         person = query2.to_dict()['content']
 
     if query3 is not None:
-        point = query2.to_dict()['content']
+        point = query3.to_dict()['content']
 
     sql = f'''SELECT type,
 	content,
