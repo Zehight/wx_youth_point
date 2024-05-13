@@ -30,19 +30,20 @@ def update_func(**kwargs):
 
 # 查询
 def getinfo_func(**kwargs):
+    print(kwargs)
     if 'ip' not in kwargs:
         return "操作失败", '参数错误'
-
     # 获取某个IP最新一次投票的队伍名字和辩手名字
-
     team = ''
     person = ''
+    point = ''
     vote_list = []
-
     # 子查询
     query1 = db.session.query(Debate).filter(Debate.ip == kwargs['ip'], Debate.type == '1',Debate.title==kwargs['title']).order_by(
         Debate.create_time.desc()).first()
     query2 = db.session.query(Debate).filter(Debate.ip == kwargs['ip'], Debate.type == '2',Debate.title==kwargs['title']).order_by(
+        Debate.create_time.desc()).first()
+    query3 = db.session.query(Debate).filter(Debate.ip == kwargs['ip'], Debate.type == '3',Debate.title==kwargs['title']).order_by(
         Debate.create_time.desc()).first()
     if query1 is not None:
         team = query1.to_dict()['content']
@@ -50,7 +51,10 @@ def getinfo_func(**kwargs):
     if query2 is not None:
         person = query2.to_dict()['content']
 
-        sql = f'''SELECT type,
+    if query3 is not None:
+        point = query2.to_dict()['content']
+
+    sql = f'''SELECT type,
 	content,
 	COUNT(*) AS vote_count ,title
 FROM
@@ -62,15 +66,14 @@ GROUP BY
 	content ,title
 ORDER BY
 	vote_count DESC;'''
-        result = db.session.execute(text(sql))
-        data = result.fetchall()
-        vote_list = []
-        if data is not None:
-            for item in data:
-                vote_list.append({"type": item[0], "content": item[1], "vote_num": item[2]})
+    result = db.session.execute(text(sql))
+    data = result.fetchall()
+    if data is not None:
+        for item in data:
+            vote_list.append({"type": item[0], "content": item[1], "vote_num": item[2]})
 
     db.session.close()
-    return "操作成功", {"team": team, "person": person, "vote": vote_list}
+    return "操作成功", {"team": team, "person": person,"point":point, "vote":vote_list}
     # debate = Debate.get(id=kwargs['id'])
     # if debate:
     #     return "操作成功",debate.to_dict()
