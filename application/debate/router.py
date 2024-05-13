@@ -12,7 +12,6 @@ def add():
     x_forwarded_for = request.headers.get('X-ORIGINAL-FORWARDED-FOR')
     # x_forwarded_for = '192.168.2.2'
     requestData = json.loads(request.data)
-    requestData['ip'] = x_forwarded_for
     msg, data = DebateFuncs.create_func(**requestData)
     return MyResponse.make_succ_response(msg=msg, data=data)
 
@@ -36,7 +35,6 @@ def info():
     x_forwarded_for = request.headers.get('X-ORIGINAL-FORWARDED-FOR')
     # x_forwarded_for = '192.168.1.1'
     requestData = json.loads(request.data)
-    requestData['ip'] = x_forwarded_for
     msg, data = DebateFuncs.getinfo_func(**requestData)
     return MyResponse.make_succ_response(msg=msg, data=data)
 
