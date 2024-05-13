@@ -136,3 +136,38 @@ class CRUDMixin:
             'list': result
         }
 
+    @classmethod
+    def search_by_id(cls, keyword = '',page=None, rows=None,order_method='desc',**kwargs):
+        start_time = '2022-01-01 23:59:59'
+        end_time = '2100-01-01 23:59:59'
+        if 'start_time' in kwargs:
+            start_time = kwargs['start_time']
+            del kwargs['start_time']
+        if 'end_time' in kwargs:
+            end_time = kwargs['end_time']
+            del kwargs['end_time']
+        query = cls.query
+        if hasattr(cls, 'search_fields') and keyword:
+            query = query.filter(or_(*[getattr(cls, field).ilike(f'%{keyword}%') for field in cls.search_fields]))
+        if order_method == 'desc':
+            query = query.filter(and_(cls.create_time.between(start_time, end_time), *[getattr(cls, key) == value for key, value in kwargs.items()])).order_by(cls.id.desc())
+        else:
+            query = query.filter(and_(cls.create_time.between(start_time, end_time), *[getattr(cls, key) == value for key, value in kwargs.items()])).order_by(cls.id)
+        total = query.count()
+        if page is None or rows is None:
+            page=1
+            rows=10
+            items = query.all()
+            result = [item.to_dict() for item in items]
+        else:
+            page = int(page)
+            rows = int(rows)
+            items = query.paginate(page, rows, error_out=False)
+            result = [item.to_dict() for item in items.items]
+        query.session.close()
+        return {
+            'page': page,
+            'rows': rows,
+            'total': total,
+            'list': result
+        }

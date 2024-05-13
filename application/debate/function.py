@@ -40,11 +40,11 @@ def getinfo_func(**kwargs):
     vote_list = []
     # 子查询
     query1 = db.session.query(Debate).filter(Debate.ip == kwargs['ip'], Debate.type == '1',Debate.title==kwargs['title']).order_by(
-        Debate.create_time.desc()).first()
+        Debate.id.desc()).first()
     query2 = db.session.query(Debate).filter(Debate.ip == kwargs['ip'], Debate.type == '2',Debate.title==kwargs['title']).order_by(
-        Debate.create_time.desc()).first()
+        Debate.id.desc()).first()
     query3 = db.session.query(Debate).filter(Debate.ip == kwargs['ip'], Debate.type == '3',Debate.title==kwargs['title']).order_by(
-        Debate.create_time.desc()).first()
+        Debate.id.desc()).first()
     if query1 is not None:
         team = query1.to_dict()['content']
 
@@ -83,5 +83,6 @@ ORDER BY
 
 # 分页查询列表
 def getlist_func(**kwargs):
-    result = Debate.search(**kwargs)
+    result = Debate.search_by_id(**kwargs)
+    print(result)
     return "操作成功", result
