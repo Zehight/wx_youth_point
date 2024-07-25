@@ -25,6 +25,7 @@ def update():
     return MyResponse.make_succ_response(msg=msg, data=data)
 
 
+
 @fill.route('/update', methods=['POST'])
 def update():
     open_id = request.headers.get("x-wx-openid", "")
