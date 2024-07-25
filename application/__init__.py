@@ -6,6 +6,8 @@ GATEWAY = Blueprint(config.API_GATEWAY, __name__, url_prefix='/' + config.API_GA
 # 注册蓝图
 from application.file import file
 from application.wxFile import wxFile
+
+
 from application.user import user
 from application.activity import activity
 from application.dept import dept
@@ -20,10 +22,9 @@ from application.message import message
 from application.debate import debate
 from application.fill import fill
 
+
+GATEWAY.register_blueprint(file)
 GATEWAY.register_blueprint(wxFile)
-
-
-
 
 GATEWAY.register_blueprint(user)
 GATEWAY.register_blueprint(activity)
@@ -38,5 +39,3 @@ GATEWAY.register_blueprint(comment)
 GATEWAY.register_blueprint(message)
 GATEWAY.register_blueprint(debate)
 GATEWAY.register_blueprint(fill)
-GATEWAY.register_blueprint(file)
-
