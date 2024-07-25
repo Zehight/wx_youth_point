@@ -97,6 +97,21 @@ class Borrow(db.Model, CRUDMixin):
     create_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now())
     return_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now())
 
+class Fill(db.Model,CRUDMixin):
+    __tablename__ = 'fill'
+    id = db.Column(db.String(50), primary_key=True, default=lambda: str(uuid.uuid4()).replace("-", ""))
+    realname = db.Column(db.String(50))
+    mbti = db.Column(db.String(50))
+    sex = db.Column(db.String(50))
+    age = db.Column(db.String(50))
+    is_sport = db.Column(db.String(50))
+    sports = db.Column(db.String(50))
+    is_lan_qiu = db.Column(db.String(50))
+    arts = db.Column(db.String(50))
+    is_art = db.Column(db.String(50))
+    create_by = db.Column(db.String(50), nullable=False)
+    create_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now())
+    return_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now())
 
 class Question(db.Model, CRUDMixin):
     __tablename__ = 'question'
