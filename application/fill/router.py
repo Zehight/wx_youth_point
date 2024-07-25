@@ -17,7 +17,7 @@ def add():
 
 
 @fill.route('/info', methods=['POST'])
-def update():
+def info():
     open_id = request.headers.get("x-wx-openid", "")
     requestData = json.loads(request.data)
     requestData['open_id'] = open_id
