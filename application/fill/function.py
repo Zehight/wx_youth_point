@@ -23,5 +23,6 @@ def info_func(**kwargs):
 # 更新
 def update_func(**kwargs):
     fill = Fill.get(create_by=kwargs['open_id'])
+    del kwargs['open_id']
     fill.update(**kwargs)
     return "操作成功","数据修改成功"
