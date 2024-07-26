@@ -62,10 +62,11 @@ def fenzu(mbti):
 
 # 新增
 def create_func(**kwargs):
+    team = fenzu(kwargs['mbti'])
+    kwargs['team'] =team
     kwargs['create_by'] =kwargs['open_id']
     del kwargs['open_id']
     Fill.create(**kwargs)
-    team = fenzu(kwargs['mbti'])
     return "操作成功",team
 
 def info_func(**kwargs):
