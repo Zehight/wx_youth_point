@@ -9,6 +9,7 @@ from application.user import function as UserFuncs
 # 新增
 def create_func(**kwargs):
     kwargs['create_by'] =kwargs['open_id']
+    del kwargs['open_id']
     Fill.create(**kwargs)
     return "操作成功","添加成功"
 
