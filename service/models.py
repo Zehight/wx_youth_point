@@ -109,6 +109,7 @@ class Fill(db.Model,CRUDMixin):
     is_lan_qiu = db.Column(db.String(50))
     arts = db.Column(db.String(50))
     is_art = db.Column(db.String(50))
+    team = db.Column(db.String(50))
     create_by = db.Column(db.String(50), nullable=False)
     create_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now())
     return_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now())
