@@ -36,6 +36,7 @@ def session_clear(exception=None):
         db.session.rollback()
 
 
+
 @app.route('/' + config.API_GATEWAY + '/health/check', methods=['GET'])
 def check():
     x_forwarded_for = request.headers.get('X-ORIGINAL-FORWARDED-FOR')
