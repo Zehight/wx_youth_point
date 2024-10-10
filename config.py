@@ -2,8 +2,8 @@ import os
 
 dev_config = {
     'username': 'root',
-    'password': '9qQZDBrZ',
-    'db_address': 'sh-cynosdbmysql-grp-dtc3n9ay.sql.tencentcdb.com:26093',
+    'password': 'gJpzkWv9',
+    'db_address': 'sh-cynosdbmysql-grp-bjczm24y.sql.tencentcdb.com:26903',
     'SecretId': 'AKIDeDPTO9i7RitzgVJwYK1a0DIDze5d6Rlt',
     'SecretKey': '543z8DNeprhPzMUCi2GKDEG94rW6Wisv',
     'data_base': 'youth_ponit',
@@ -12,7 +12,7 @@ dev_config = {
     'dev': True,
     'img_bucket_name': 'vote-img-1259115987',
     'small_img_bucket_name': 'vote-small-img-1259115987',
-    'cos_bucket':'7072-prod-4gjlstdw9f5f0d7d-1318978931',
+    'cos_bucket':'7072-prod-8g1tj3ti7395394a-1318978931',
     'cos_region':'ap-shanghai'
 }
 
