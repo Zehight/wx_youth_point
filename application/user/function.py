@@ -60,7 +60,7 @@ def register_func(**kwargs):
         return "操作失败", "用户已注册"
 
     # TODO：验证工号姓名接口，公司接口
-
+    kwargs['avatar'] = '1728542972768_ibX9dwTzDaF20587ee6a19f7a7f29bf99a10d85fcea3'
     user = User.create(**kwargs)
     user_id = user['id']
     return "操作成功", user_id
